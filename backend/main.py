@@ -57,6 +57,12 @@ async def root():
     return {"message": "Magistracy Prep AI API is running with SQLite"}
 
 
+@app.get("/health")
+async def health():
+    """Health check endpoint for Railway"""
+    return {"status": "healthy"}
+
+
 @app.post("/generate", response_model=List[Question])
 async def generate_questions(request: GenerateRequest, db: Session = Depends(get_db)):
     # Fetch random questions from the database for the given subject
