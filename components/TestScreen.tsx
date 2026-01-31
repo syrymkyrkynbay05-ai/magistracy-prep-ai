@@ -156,7 +156,7 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
           <div className="flex items-center gap-4">
               <Menu className="w-6 h-6 cursor-pointer opacity-90 hover:opacity-100" />
               <div className="font-semibold text-sm md:text-base tracking-wide flex items-center gap-2">
-                 <span>{userName || 'Айтбаев Жасұлан Аянұлы'}</span>
+                 <span>{userName || 'Пердеев Азамат'}</span>
               </div>
           </div>
           <button 
