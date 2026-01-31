@@ -4494,7 +4494,19 @@ STATIC_QUESTIONS = {
 
 def seed():
     print("🚀 Базаны статикалық сұрақтармен толтыру басталуда...")
-    Base.metadata.drop_all(bind=engine)  # Clear old AI data
+
+    # Delete existing database file to avoid corruption issues
+    db_path = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), "magistracy_prep.db"
+    )
+    if os.path.exists(db_path):
+        try:
+            os.remove(db_path)
+            print(f"✅ Ескі дерекқор файлы жойылды: {db_path}")
+        except Exception as e:
+            print(f"⚠️ Дерекқор файлын жою қатесі: {e}")
+
+    # Create fresh tables
     Base.metadata.create_all(bind=engine)
 
     db = SessionLocal()
