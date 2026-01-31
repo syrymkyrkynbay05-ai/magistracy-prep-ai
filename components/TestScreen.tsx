@@ -151,17 +151,17 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
 
   return (
     <div className="flex flex-col h-screen bg-[#F8F9FB] font-sans overflow-hidden">
-      {/* 1. Full Width Top Header (Dark Blue) */}
-      <header className="bg-[#348FE2] h-[48px] flex items-center justify-between px-4 text-white shadow-md z-50 shrink-0">
-          <div className="flex items-center gap-4">
-              <Menu className="w-6 h-6 cursor-pointer opacity-90 hover:opacity-100" />
-              <div className="font-semibold text-sm md:text-base tracking-wide flex items-center gap-2">
+      {/* 1. Full Width Top Header (Dark Blue) - Mobile Responsive */}
+      <header className="bg-[#348FE2] h-[48px] md:h-[48px] flex items-center justify-between px-2 md:px-4 text-white shadow-md z-50 shrink-0">
+          <div className="flex items-center gap-2 md:gap-4">
+              <Menu className="w-5 h-5 md:w-6 md:h-6 cursor-pointer opacity-90 hover:opacity-100" />
+              <div className="font-semibold text-xs md:text-base tracking-wide flex items-center gap-2 truncate max-w-[120px] md:max-w-none">
                  <span>{userName || 'Пердеев Азамат'}</span>
               </div>
           </div>
           <button 
               onClick={handleNextSubject}
-              className="bg-white text-[#348FE2] px-4 py-1 rounded-[3px] text-xs font-bold hover:bg-slate-50 transition shadow-sm uppercase tracking-tight"
+              className="bg-white text-[#348FE2] px-2 md:px-4 py-1 rounded-[3px] text-[10px] md:text-xs font-bold hover:bg-slate-50 transition shadow-sm uppercase tracking-tight whitespace-nowrap"
           >
               Келесі пән &gt;
           </button>
@@ -170,8 +170,8 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
       {/* 2. Main Layout (Sidebar + Content) */}
       <div className="flex flex-1 overflow-hidden">
           
-          {/* Sidebar (Left, Fixed Width, Color #56CCF2) */}
-          <div className="w-[100px] bg-[#56CCF2] flex flex-col items-center py-4 text-white border-r border-[#4DBBE0] z-40">
+          {/* Sidebar (Left, Fixed Width) - Hidden on Mobile */}
+          <div className="hidden md:flex w-[100px] bg-[#56CCF2] flex-col items-center py-4 text-white border-r border-[#4DBBE0] z-40">
               {/* Tools */}
               <div className="flex flex-col gap-4 w-full">
                   {tools.map((tool, index) => (
@@ -232,30 +232,31 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
               <div className="flex-1 overflow-y-auto bg-white p-4 md:px-8 md:py-6">
                   <div className="max-w-6xl mx-auto h-full flex flex-col">
                       
-                      {/* Nav Bar */}
-                      <div className="flex items-center justify-between pb-4 border-b-2 border-slate-200 mb-6">
+                      {/* Nav Bar - Mobile Responsive */}
+                      <div className="flex flex-col md:flex-row items-center justify-between pb-4 border-b-2 border-slate-200 mb-4 md:mb-6 gap-3 md:gap-0">
                           <button 
                               onClick={handlePrev}
                               disabled={currentIndex === 0}
-                              className="bg-[#3498DB] text-white px-5 py-2 rounded-[4px] text-sm font-bold shadow hover:bg-[#2980B9] disabled:opacity-50 disabled:shadow-none transition-colors"
+                              className="w-full md:w-auto bg-[#3498DB] text-white px-4 md:px-5 py-2 rounded-[4px] text-sm font-bold shadow hover:bg-[#2980B9] disabled:opacity-50 disabled:shadow-none transition-colors order-2 md:order-1"
                           >
-                              &lt; Алдыңғы сұрақ
+                              &lt; Алдыңғы
                           </button>
                           
-                          <div className="text-center">
-                             <div className="text-lg font-bold text-slate-800 uppercase tracking-tight">
-                                Бөлім: {SUBJECTS[currentSubjectId].name}
+                          <div className="text-center order-1 md:order-2">
+                             <div className="text-sm md:text-lg font-bold text-slate-800 uppercase tracking-tight">
+                                {SUBJECTS[currentSubjectId].name}
                              </div>
+                             <span className="text-slate-500 font-semibold text-xs md:hidden">Сұрақ {currentIndex + 1}/{currentSubjectQuestions.length}</span>
                           </div>
 
-                          <div className="flex items-center gap-4">
-                              <span className="text-slate-500 font-semibold text-sm">Сұрақ № {currentIndex + 1}</span>
+                          <div className="flex items-center gap-2 md:gap-4 w-full md:w-auto order-3">
+                              <span className="hidden md:inline text-slate-500 font-semibold text-sm">Сұрақ № {currentIndex + 1}</span>
                               <button 
                                   onClick={handleNext}
                                   disabled={currentIndex === currentSubjectQuestions.length - 1}
-                                  className="bg-[#3498DB] text-white px-6 py-2 rounded-[4px] text-sm font-bold shadow hover:bg-[#2980B9] disabled:opacity-50 disabled:shadow-none transition-colors"
+                                  className="flex-1 md:flex-none bg-[#3498DB] text-white px-4 md:px-6 py-2 rounded-[4px] text-sm font-bold shadow hover:bg-[#2980B9] disabled:opacity-50 disabled:shadow-none transition-colors"
                               >
-                                  Келесі сұрақ &gt;
+                                  Келесі &gt;
                               </button>
                           </div>
                       </div>
@@ -340,6 +341,26 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
         isOpen={showSolubilityTable}
         onClose={() => setShowSolubilityTable(false)}
       />
+
+      {/* Mobile Bottom Navigation - Only visible on mobile */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-[#56CCF2] border-t border-[#4DBBE0] flex justify-around items-center py-2 px-1 z-50 safe-area-bottom">
+        <button onClick={() => setShowSections(true)} className="flex flex-col items-center text-white p-1">
+          <FileText className="w-5 h-5" />
+          <span className="text-[9px] mt-0.5">Бөлімдер</span>
+        </button>
+        <button onClick={() => setShowAnswerMap(true)} className="flex flex-col items-center text-white p-1">
+          <Map className="w-5 h-5" />
+          <span className="text-[9px] mt-0.5">Карта</span>
+        </button>
+        <button onClick={() => setShowCalculator(true)} className="flex flex-col items-center text-white p-1">
+          <Calculator className="w-5 h-5" />
+          <span className="text-[9px] mt-0.5">Есептеу</span>
+        </button>
+        <button onClick={handleFinish} className="flex flex-col items-center text-red-100 p-1">
+          <LogOut className="w-5 h-5" />
+          <span className="text-[9px] mt-0.5">Аяқтау</span>
+        </button>
+      </div>
     </div>
   );
 };
