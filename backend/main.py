@@ -11,11 +11,14 @@ if backend_dir not in sys.path:
 
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from typing import List, Optional
 from dotenv import load_dotenv
+from pathlib import Path
 
 from models import (
     DBQuestion,
@@ -46,15 +49,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Serve static files from dist folder
+project_root = Path(__file__).parent.parent
+dist_folder = project_root / "dist"
+
 
 class GenerateRequest(BaseModel):
     subject_id: SubjectId
     count: int = 5
-
-
-@app.get("/")
-async def root():
-    return {"message": "Magistracy Prep AI API is running with SQLite"}
 
 
 @app.get("/health")
@@ -192,6 +194,21 @@ async def calculate_results(request: CalculateRequest):
         correctCount=correct_count,
         totalQuestions=len(request.questions),
     )
+
+
+# Mount static files for React assets (CSS, JS, images)
+if dist_folder.exists():
+    app.mount("/assets", StaticFiles(directory=dist_folder / "assets"), name="assets")
+
+
+# Catch-all route to serve React SPA (must be last!)
+@app.get("/{full_path:path}")
+async def serve_spa(full_path: str):
+    """Serve React SPA for all non-API routes"""
+    index_file = dist_folder / "index.html"
+    if index_file.exists():
+        return FileResponse(index_file)
+    return {"message": "Magistracy Prep AI API is running with SQLite"}
 
 
 if __name__ == "__main__":
