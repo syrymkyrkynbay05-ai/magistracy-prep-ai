@@ -1,11 +1,14 @@
 import { Question, SubjectId } from "../types";
 
+// Use relative URL for production (same server serves both frontend and backend)
+const API_BASE_URL = '';
+
 export const generateQuestionsForSubject = async (
   subjectId: SubjectId, 
   count: number = 5 
 ): Promise<Question[]> => {
   try {
-    const response = await fetch('http://localhost:8000/generate', {
+    const response = await fetch(`${API_BASE_URL}/generate`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -32,7 +35,7 @@ export const generateQuestionsForSubject = async (
 
 export const getSyllabus = async (subjectId: string): Promise<string> => {
   try {
-    const response = await fetch(`http://localhost:8000/syllabus/${subjectId}`);
+    const response = await fetch(`${API_BASE_URL}/syllabus/${subjectId}`);
     if (!response.ok) return "Мәлімет табылмады.";
     const data = await response.json();
     return data.content;

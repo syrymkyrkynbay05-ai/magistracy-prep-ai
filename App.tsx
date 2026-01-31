@@ -28,7 +28,7 @@ const RootApp: React.FC = () => {
       const allQuestions = results.flat();
 
       if (allQuestions.length === 0) {
-        alert("Failed to generate questions. Please check your API Key or try again.");
+        alert("Сұрақтарды жүктеу кезінде қате орын алды. Қайта көріңіз.");
         setIsLoading(false);
         return;
       }
