@@ -25,9 +25,8 @@ RUN npm run build
 # Initialize database
 RUN cd backend && python seed_db.py
 
-# Railway injects PORT environment variable
+# Railway injects PORT environment variable (default 8000)
 ENV PORT=8000
-EXPOSE $PORT
 
-# Start backend server - use shell form to expand $PORT
-CMD uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+# Use shell form with explicit sh -c to ensure $PORT expansion
+CMD ["/bin/sh", "-c", "uvicorn backend.main:app --host 0.0.0.0 --port ${PORT}"]
