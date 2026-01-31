@@ -1,4 +1,12 @@
+import os
+import sys
 import uuid
+
+# Add backend directory to path for imports when running from project root
+backend_dir = os.path.dirname(os.path.abspath(__file__))
+if backend_dir not in sys.path:
+    sys.path.insert(0, backend_dir)
+
 from sqlalchemy.orm import Session
 from database import SessionLocal, engine, Base
 from models import DBSubject, DBQuestion, DBOption, SubjectId, QuestionType

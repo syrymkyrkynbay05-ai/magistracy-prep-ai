@@ -1,8 +1,9 @@
 [build]
 builder = "NIXPACKS"
+buildCommand = "pip install -r backend/requirements.txt"
 
 [deploy]
-startCommand = "cd backend && python seed_db.py && uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}"
+startCommand = "python backend/seed_db.py && uvicorn backend.main:app --host 0.0.0.0 --port ${PORT:-8000}"
 healthcheckPath = "/"
 healthcheckTimeout = 300
 restartPolicyType = "ON_FAILURE"
