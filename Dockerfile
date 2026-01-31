@@ -28,23 +28,15 @@ RUN cd backend && python seed_db.py
 # Default port (Railway will override with $PORT)
 ENV PORT=8000
 
-# Create startup script with logging
-RUN echo '#!/bin/bash\n\
-echo "🚀 [STARTUP] Container started at $(date)"\n\
+# Create startup script with SH (not bash!)
+RUN printf '#!/bin/sh\n\
+echo "🚀 [STARTUP] Container started"\n\
 echo "📍 [STARTUP] PORT=$PORT"\n\
-echo "📍 [STARTUP] Working directory: $(pwd)"\n\
-echo "📍 [STARTUP] Python version: $(python --version)"\n\
-echo "📍 [STARTUP] Files in /app/backend:"\n\
-ls -la /app/backend/\n\
-echo "📍 [STARTUP] Checking if main.py exists..."\n\
-if [ -f "/app/backend/main.py" ]; then\n\
-    echo "✅ [STARTUP] main.py found"\n\
-else\n\
-    echo "❌ [STARTUP] main.py NOT FOUND"\n\
-fi\n\
-echo "🔥 [STARTUP] Starting uvicorn on port $PORT..."\n\
+echo "📍 [STARTUP] Python: $(python --version)"\n\
+ls -la /app/backend/ || echo "backend folder missing"\n\
+echo "🔥 [STARTUP] Starting uvicorn..."\n\
 exec uvicorn backend.main:app --host 0.0.0.0 --port $PORT\n\
 ' > /app/start.sh && chmod +x /app/start.sh
 
-# Use the startup script
-CMD ["/bin/bash", "/app/start.sh"]
+# Use SH to run the startup script
+CMD ["/bin/sh", "/app/start.sh"]
