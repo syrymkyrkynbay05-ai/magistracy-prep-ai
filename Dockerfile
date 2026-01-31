@@ -25,18 +25,8 @@ RUN npm run build
 # Initialize database at build time
 RUN cd backend && python seed_db.py
 
-# Default port (Railway will override with $PORT)
+# Default port
 ENV PORT=8000
 
-# Create startup script with SH (not bash!)
-RUN printf '#!/bin/sh\n\
-echo "🚀 [STARTUP] Container started"\n\
-echo "📍 [STARTUP] PORT=$PORT"\n\
-echo "📍 [STARTUP] Python: $(python --version)"\n\
-ls -la /app/backend/ || echo "backend folder missing"\n\
-echo "🔥 [STARTUP] Starting uvicorn..."\n\
-exec uvicorn backend.main:app --host 0.0.0.0 --port $PORT\n\
-' > /app/start.sh && chmod +x /app/start.sh
-
-# Use SH to run the startup script
-CMD ["/bin/sh", "/app/start.sh"]
+# Direct CMD with shell - no script file needed
+CMD sh -c "echo '� Starting uvicorn on port:' $PORT && uvicorn backend.main:app --host 0.0.0.0 --port $PORT"
