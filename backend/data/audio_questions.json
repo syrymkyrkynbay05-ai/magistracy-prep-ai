@@ -1,0 +1,209 @@
+{
+  "audioDialogues": [
+    {
+      "id": "dialogue_1",
+      "title": "Travel to Sydney",
+      "audioFile": "/audio/audio_dialogue_1_sydney.mp3",
+      "duration": 90,
+      "context": "A woman named Sarah gives travel advice to Ryan who is planning to visit Sydney, Australia.",
+      "questions": [
+        {
+          "id": "audio_1_q1",
+          "questionText": "What is the main topic of this conversation?",
+          "options": [
+            "A) Planning a business trip to Sydney",
+            "B) Getting travel recommendations for Sydney",
+            "C) Discussing the history of Sydney",
+            "D) Booking a hotel in Sydney"
+          ],
+          "correctAnswer": 1,
+          "points": 1
+        },
+        {
+          "id": "audio_1_q2",
+          "questionText": "Which beach does Sarah recommend as a quieter alternative to Bondi Beach?",
+          "options": [
+            "A) Coogee Beach",
+            "B) Palm Beach",
+            "C) Manly Beach",
+            "D) Bronte Beach"
+          ],
+          "correctAnswer": 2,
+          "points": 1
+        },
+        {
+          "id": "audio_1_q3",
+          "questionText": "How can Ryan get to the recommended beach?",
+          "options": [
+            "A) By bus from the city center",
+            "B) By taxi from the airport",
+            "C) By ferry from Circular Quay",
+            "D) By train from Central Station"
+          ],
+          "correctAnswer": 2,
+          "points": 1
+        },
+        {
+          "id": "audio_1_q4",
+          "questionText": "How long does the ferry ride take?",
+          "options": [
+            "A) About fifteen minutes",
+            "B) About thirty minutes",
+            "C) About forty-five minutes",
+            "D) About one hour"
+          ],
+          "correctAnswer": 1,
+          "points": 1
+        },
+        {
+          "id": "audio_1_q5",
+          "questionText": "What Australian food does Sarah recommend?",
+          "options": [
+            "A) Vegemite sandwich",
+            "B) Meat pie",
+            "C) Lamington cake",
+            "D) Pavlova"
+          ],
+          "correctAnswer": 1,
+          "points": 1
+        },
+        {
+          "id": "audio_1_q6",
+          "questionText": "What special fact does Sarah mention about Sydney Fish Market?",
+          "options": [
+            "A) It's the oldest in Australia",
+            "B) It's the cheapest in the world",
+            "C) It's the third largest in the world",
+            "D) It's the most famous in Asia"
+          ],
+          "correctAnswer": 2,
+          "points": 1
+        },
+        {
+          "id": "audio_1_q7",
+          "questionText": "What will the weather be like during Ryan's visit in December?",
+          "options": [
+            "A) Cold and rainy",
+            "B) Warm, around 25-30°C",
+            "C) Hot, around 35-40°C",
+            "D) Mild, around 15-20°C"
+          ],
+          "correctAnswer": 1,
+          "points": 1
+        }
+      ]
+    },
+    {
+      "id": "dialogue_2",
+      "title": "Birthday Party Planning",
+      "audioFile": "/audio/audio_dialogue_2_birthday.mp3",
+      "duration": 75,
+      "context": "A woman is planning her birthday party with help from her friend Tom.",
+      "questions": [
+        {
+          "id": "audio_2_q1",
+          "questionText": "When is the woman's birthday party?",
+          "options": [
+            "A) This Friday",
+            "B) This Saturday",
+            "C) Next Sunday",
+            "D) Next Monday"
+          ],
+          "correctAnswer": 1,
+          "points": 1
+        },
+        {
+          "id": "audio_2_q2",
+          "questionText": "What was Tom's first suggestion for the venue?",
+          "options": [
+            "A) A sushi restaurant",
+            "B) A pizza place downtown",
+            "C) A burger restaurant",
+            "D) A Chinese restaurant"
+          ],
+          "correctAnswer": 1,
+          "points": 1
+        },
+        {
+          "id": "audio_2_q3",
+          "questionText": "Why did the woman reject the first suggestion?",
+          "options": [
+            "A) It's too expensive",
+            "B) It's too far away",
+            "C) She's not in the mood for that food",
+            "D) It's closed on Saturdays"
+          ],
+          "correctAnswer": 2,
+          "points": 1
+        },
+        {
+          "id": "audio_2_q4",
+          "questionText": "Where is the chosen restaurant located?",
+          "options": [
+            "A) Near the park",
+            "B) On Main Street",
+            "C) In the shopping mall",
+            "D) By the river"
+          ],
+          "correctAnswer": 1,
+          "points": 1
+        },
+        {
+          "id": "audio_2_q5",
+          "questionText": "How many people will attend the party?",
+          "options": [
+            "A) About ten people",
+            "B) About fifteen people",
+            "C) About twenty people",
+            "D) About twenty-five people"
+          ],
+          "correctAnswer": 1,
+          "points": 1
+        },
+        {
+          "id": "audio_2_q6",
+          "questionText": "What time will the party start?",
+          "options": [
+            "A) Six in the evening",
+            "B) Seven in the evening",
+            "C) Eight in the evening",
+            "D) Nine in the evening"
+          ],
+          "correctAnswer": 1,
+          "points": 1
+        },
+        {
+          "id": "audio_2_q7",
+          "questionText": "What type of cake does the woman want?",
+          "options": [
+            "A) Vanilla cake",
+            "B) Strawberry cake",
+            "C) Chocolate cake",
+            "D) Cheesecake"
+          ],
+          "correctAnswer": 2,
+          "points": 1
+        },
+        {
+          "id": "audio_2_q8",
+          "questionText": "How many people can the private room accommodate?",
+          "options": [
+            "A) Up to fifteen people",
+            "B) Up to twenty people",
+            "C) Up to twenty-five people",
+            "D) Up to thirty people"
+          ],
+          "correctAnswer": 1,
+          "points": 1
+        }
+      ]
+    }
+  ],
+  "instructions": {
+    "kz": "Аудионы тыңдап, сұрақтарға жауап беріңіз. Аудио тек 2 рет қайталанады.",
+    "ru": "Прослушайте аудио и ответьте на вопросы. Аудио повторяется только 2 раза.",
+    "en": "Listen to the audio and answer the questions. The audio can only be played twice."
+  },
+  "totalQuestions": 15,
+  "totalPoints": 15
+}
