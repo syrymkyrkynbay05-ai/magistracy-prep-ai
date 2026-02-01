@@ -61,10 +61,11 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
   const currentIndex = currentQuestionIndex;
   const currentQuestionId = currentQuestion?.id;
 
-  // Get current audio dialogue based on question index
+  // Get current audio dialogue based on question index (КТ format: 16 listening questions)
+  // Questions 1-8: Audio 1, Questions 9-16: Audio 2
   const getCurrentDialogue = () => {
-    if (currentIndex < 5) return selectedDialogues[0];
-    if (currentIndex < 10) return selectedDialogues[1];
+    if (currentIndex < 8) return selectedDialogues[0];
+    if (currentIndex < 16) return selectedDialogues[1];
     return null;
   };
 
@@ -291,8 +292,8 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
 
                       {/* Question Content */}
                       <div className="flex-1">
-                          {/* Audio Player for English Listening Section (First 10 questions) */}
-                          {currentSubjectId === SubjectId.ENGLISH && currentIndex < 10 && getCurrentDialogue() && (
+                          {/* Audio Player for English Listening Section (КТ: First 16 questions) */}
+                          {currentSubjectId === SubjectId.ENGLISH && currentIndex < 16 && getCurrentDialogue() && (
                               <div className="mb-6">
                                   <AudioPlayer src={getCurrentDialogue()!.file} />
                               </div>
@@ -301,6 +302,15 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
                           <div className="text-2xl font-serif text-slate-900 leading-relaxed mb-6 font-medium">
                               {currentQuestion.text}
                           </div>
+
+                          {/* Reading Passage for Comprehension Questions */}
+                          {currentQuestion.readingPassage && (
+                            <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-xl p-5 mb-6 shadow-sm">
+                                <div className="prose prose-sm max-w-none text-slate-700 leading-relaxed">
+                                    <p className="whitespace-pre-line">{currentQuestion.readingPassage}</p>
+                                </div>
+                            </div>
+                          )}
 
                           {currentQuestion.codeSnippet && (
                             <div className="bg-[#1E1E1E] text-white p-5 rounded-md shadow-inner font-mono text-sm mb-8 overflow-x-auto border border-gray-700">

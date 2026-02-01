@@ -29,6 +29,7 @@ export interface Question {
   codeSnippet?: string; // For C++ or SQL code blocks
   audioUrl?: string;    // URL to audio file for listening questions
   context?: string;     // Additional context (e.g. "Listen to the dialogue...")
+  readingPassage?: string; // Reading passage text for comprehension questions
   options: Option[];
   correctOptionIds: string[]; // Array for multiple answers
   type: QuestionType;
