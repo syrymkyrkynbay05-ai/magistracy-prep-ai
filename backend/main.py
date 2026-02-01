@@ -67,14 +67,78 @@ async def health():
 
 @app.post("/generate", response_model=List[Question])
 async def generate_questions(request: GenerateRequest, db: Session = Depends(get_db)):
-    # Fetch random questions from the database for the given subject
-    db_questions = (
-        db.query(DBQuestion)
-        .filter(DBQuestion.subject_id == request.subject_id.value)
-        .order_by(func.random())
-        .limit(request.count)
-        .all()
-    )
+    """
+    Generate questions for a subject.
+    For English (KT format): 16 listening + 18 grammar + 16 reading = 50 questions
+    """
+
+    # For English subject, use KT format structure
+    if request.subject_id == SubjectId.ENGLISH:
+        questions = []
+
+        # 1. Listening questions (1-16): fetch by topic containing 'listening' or 'audio'
+        listening_qs = (
+            db.query(DBQuestion)
+            .filter(DBQuestion.subject_id == request.subject_id.value)
+            .filter(
+                DBQuestion.topic.ilike("%listening%")
+                | DBQuestion.topic.ilike("%audio%")
+            )
+            .order_by(func.random())
+            .limit(16)
+            .all()
+        )
+
+        # 2. Grammar/Vocabulary questions (17-34): fetch by topic containing 'grammar' or 'vocab'
+        grammar_qs = (
+            db.query(DBQuestion)
+            .filter(DBQuestion.subject_id == request.subject_id.value)
+            .filter(
+                DBQuestion.topic.ilike("%grammar%")
+                | DBQuestion.topic.ilike("%vocab%")
+                | DBQuestion.topic.ilike("%lexic%")
+            )
+            .order_by(func.random())
+            .limit(18)
+            .all()
+        )
+
+        # 3. Reading questions (35-50): fetch by topic containing 'reading'
+        reading_qs = (
+            db.query(DBQuestion)
+            .filter(DBQuestion.subject_id == request.subject_id.value)
+            .filter(DBQuestion.topic.ilike("%reading%"))
+            .order_by(func.random())
+            .limit(16)
+            .all()
+        )
+
+        # If not enough topic-specific questions, fill with random ones
+        all_db_questions = listening_qs + grammar_qs + reading_qs
+
+        if len(all_db_questions) < request.count:
+            # Fallback: get random questions to fill the gap
+            existing_ids = [q.id for q in all_db_questions]
+            additional = (
+                db.query(DBQuestion)
+                .filter(DBQuestion.subject_id == request.subject_id.value)
+                .filter(~DBQuestion.id.in_(existing_ids) if existing_ids else True)
+                .order_by(func.random())
+                .limit(request.count - len(all_db_questions))
+                .all()
+            )
+            all_db_questions.extend(additional)
+
+        db_questions = all_db_questions[: request.count]
+    else:
+        # For other subjects, use random selection
+        db_questions = (
+            db.query(DBQuestion)
+            .filter(DBQuestion.subject_id == request.subject_id.value)
+            .order_by(func.random())
+            .limit(request.count)
+            .all()
+        )
 
     if not db_questions:
         raise HTTPException(
@@ -95,6 +159,9 @@ async def generate_questions(request: GenerateRequest, db: Session = Depends(get
                 subjectId=request.subject_id,
                 text=db_q.text,
                 codeSnippet=db_q.code_snippet,
+                readingPassage=(
+                    db_q.reading_passage if hasattr(db_q, "reading_passage") else None
+                ),
                 options=options,
                 correctOptionIds=correct_ids,
                 type=db_q.type,
@@ -103,10 +170,6 @@ async def generate_questions(request: GenerateRequest, db: Session = Depends(get
                 hint=db_q.hint,
             )
         )
-
-    # Sort questions by difficulty: easy -> medium -> hard
-    difficulty_order = {"easy": 0, "medium": 1, "hard": 2}
-    questions.sort(key=lambda q: difficulty_order.get(q.difficulty, 1))
 
     return questions
 

@@ -38,6 +38,9 @@ class DBQuestion(Base):
     subject_id = Column(String(50), ForeignKey("subjects.id"))
     text = Column(Text, nullable=False)
     code_snippet = Column(Text, nullable=True)
+    reading_passage = Column(
+        Text, nullable=True
+    )  # Reading text for comprehension questions
     type = Column(SQLEnum(QuestionType), nullable=False)
     topic = Column(String(255))
 
@@ -73,6 +76,7 @@ class Question(BaseModel):
     subjectId: SubjectId
     text: str
     codeSnippet: Optional[str] = None
+    readingPassage: Optional[str] = None  # Reading text for comprehension
     options: List[Option]
     correctOptionIds: List[str]
     type: QuestionType
