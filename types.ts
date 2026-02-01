@@ -35,6 +35,7 @@ export interface Question {
   type: QuestionType;
   topic: string;
   difficulty?: Difficulty;
+  languageLevel?: string; // A1/A2/B1/B2/C for CEFR levels
   hint?: string; // Explanation for wrong answers
 }
 

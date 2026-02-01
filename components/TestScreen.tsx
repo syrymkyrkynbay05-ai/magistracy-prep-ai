@@ -299,6 +299,22 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
                               </div>
                           )}
 
+                          {/* Language Level Badge for English */}
+                          {currentSubjectId === SubjectId.ENGLISH && currentQuestion.languageLevel && (
+                              <div className="mb-3">
+                                  <span className={`
+                                      inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider
+                                      ${currentQuestion.languageLevel === 'A1' ? 'bg-green-100 text-green-700' : ''}
+                                      ${currentQuestion.languageLevel === 'A2' ? 'bg-blue-100 text-blue-700' : ''}
+                                      ${currentQuestion.languageLevel === 'B1' ? 'bg-yellow-100 text-yellow-700' : ''}
+                                      ${currentQuestion.languageLevel === 'B2' ? 'bg-orange-100 text-orange-700' : ''}
+                                      ${currentQuestion.languageLevel === 'C' ? 'bg-red-100 text-red-700' : ''}
+                                  `}>
+                                      {currentQuestion.languageLevel} деңгей
+                                  </span>
+                              </div>
+                          )}
+
                           <div className="text-2xl font-serif text-slate-900 leading-relaxed mb-6 font-medium">
                               {currentQuestion.text}
                           </div>
