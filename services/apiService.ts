@@ -1,7 +1,7 @@
 import { Question, SubjectId } from "../types";
 
-// Use relative URL for production (same server serves both frontend and backend)
-const API_BASE_URL = '';
+// Use localhost:8000 for local development, empty string for production
+const API_BASE_URL = window.location.hostname === 'localhost' ? 'http://localhost:8000' : '';
 
 export const generateQuestionsForSubject = async (
   subjectId: SubjectId, 

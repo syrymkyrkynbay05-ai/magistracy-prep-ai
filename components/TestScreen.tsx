@@ -264,9 +264,29 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
 
                       {/* Question Content */}
                       <div className="flex-1">
-                          {/* Audio Player for Listening Questions */}
-                          {currentQuestion.type === QuestionType.AUDIO && currentQuestion.audioUrl && (
-                              <AudioPlayer src={currentQuestion.audioUrl} />
+                          {/* Audio Player for English Listening Section (First 10 questions) */}
+                          {currentSubjectId === SubjectId.ENGLISH && currentIndex < 10 && (
+                              <div className="mb-6">
+                                  <div className="bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200 rounded-xl p-4 shadow-sm">
+                                      <div className="flex items-center gap-2 mb-3">
+                                          <span className="bg-indigo-600 text-white text-xs px-2 py-1 rounded font-bold">
+                                              ТЫҢДАЛЫМ
+                                          </span>
+                                          <span className="text-sm font-semibold text-indigo-800">
+                                              {currentIndex < 5 ? 'Dialogue 1: Travel to Sydney' : 'Dialogue 2: Birthday Party'}
+                                          </span>
+                                          <span className="text-xs text-indigo-500 ml-auto">
+                                              Сұрақ {(currentIndex % 5) + 1}/5
+                                          </span>
+                                      </div>
+                                      <AudioPlayer 
+                                          src={currentIndex < 5 ? '/audio/dialogue_1.wav' : '/audio/dialogue_2.wav'} 
+                                      />
+                                      <p className="text-xs text-indigo-600 mt-2 text-center italic">
+                                          💡 Диалогты тыңдап, төмендегі сұраққа жауап беріңіз
+                                      </p>
+                                  </div>
+                              </div>
                           )}
 
                           <div className="text-2xl font-serif text-slate-900 leading-relaxed mb-6 font-medium">
