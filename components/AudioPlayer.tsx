@@ -1,23 +1,22 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Play, Pause, AlertCircle } from 'lucide-react';
+import { Play, Pause, RotateCcw, Volume2 } from 'lucide-react';
 
 interface AudioPlayerProps {
   src: string;
-  maxPlays?: number;
 }
 
-const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, maxPlays = 2 }) => {
+const AudioPlayer: React.FC<AudioPlayerProps> = ({ src }) => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [playCount, setPlayCount] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
 
   useEffect(() => {
     // Reset state when source changes
     setIsPlaying(false);
     setProgress(0);
-    setPlayCount(0);
+    setCurrentTime(0);
     if (audioRef.current) {
       audioRef.current.load();
     }
@@ -29,8 +28,6 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, maxPlays = 2 }) => {
     if (isPlaying) {
       audioRef.current.pause();
     } else {
-      if (playCount >= maxPlays) return;
-      
       const promise = audioRef.current.play();
       if (promise !== undefined) {
         promise.catch(error => {
@@ -46,13 +43,31 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, maxPlays = 2 }) => {
       const current = audioRef.current.currentTime;
       const total = audioRef.current.duration;
       setDuration(total);
+      setCurrentTime(current);
       setProgress((current / total) * 100);
     }
   };
 
   const handleEnded = () => {
     setIsPlaying(false);
-    setPlayCount(prev => prev + 1);
+    setProgress(0);
+    setCurrentTime(0);
+  };
+
+  const handleRestart = () => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0;
+      setProgress(0);
+      setCurrentTime(0);
+    }
+  };
+
+  const handleSeek = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!audioRef.current) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const percentage = x / rect.width;
+    audioRef.current.currentTime = percentage * duration;
   };
 
   const formatTime = (time: number) => {
@@ -62,18 +77,14 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, maxPlays = 2 }) => {
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   };
 
-  const isLimitReached = playCount >= maxPlays;
-
   return (
-    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-      <div className="flex items-center justify-between mb-2">
+    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4 mb-6 shadow-sm">
+      <div className="flex items-center justify-between mb-3">
         <h4 className="text-sm font-bold text-blue-800 flex items-center gap-2">
+          <Volume2 className="w-4 h-4" />
           <span className="bg-blue-600 text-white text-xs px-2 py-0.5 rounded">AUDIO</span>
           Тыңдалым тапсырмасы
         </h4>
-        <div className="text-xs font-semibold text-blue-600">
-          Тыңдалды: {playCount}/{maxPlays}
-        </div>
       </div>
 
       <audio
@@ -84,40 +95,45 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, maxPlays = 2 }) => {
         onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}
       />
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3">
+        {/* Play/Pause Button */}
         <button
           onClick={togglePlay}
-          disabled={isLimitReached && !isPlaying}
-          className={`
-            w-10 h-10 rounded-full flex items-center justify-center transition-all
-            ${isLimitReached && !isPlaying
-              ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-              : 'bg-blue-600 text-white hover:bg-blue-700 shadow-md active:scale-95'}
-          `}
+          className="w-12 h-12 rounded-full flex items-center justify-center bg-blue-600 text-white hover:bg-blue-700 shadow-lg active:scale-95 transition-all"
         >
           {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5 ml-0.5" />}
         </button>
 
+        {/* Progress Bar */}
         <div className="flex-1">
-          <div className="h-2 bg-blue-200 rounded-full overflow-hidden">
+          <div 
+            className="h-2.5 bg-blue-200 rounded-full overflow-hidden cursor-pointer hover:bg-blue-300 transition-colors"
+            onClick={handleSeek}
+          >
             <div 
-              className="h-full bg-blue-600 transition-all duration-300 ease-linear"
+              className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 transition-all duration-100 ease-linear rounded-full"
               style={{ width: `${progress}%` }}
             />
           </div>
-          <div className="flex justify-between mt-1 text-xs text-blue-500 font-medium">
-            <span>{formatTime(audioRef.current?.currentTime || 0)}</span>
+          <div className="flex justify-between mt-1.5 text-xs text-blue-600 font-medium">
+            <span>{formatTime(currentTime)}</span>
             <span>{formatTime(duration)}</span>
           </div>
         </div>
+
+        {/* Restart Button */}
+        <button
+          onClick={handleRestart}
+          className="w-9 h-9 rounded-full flex items-center justify-center bg-white border border-blue-200 text-blue-600 hover:bg-blue-50 active:scale-95 transition-all"
+          title="Қайта тыңдау"
+        >
+          <RotateCcw className="w-4 h-4" />
+        </button>
       </div>
 
-      {isLimitReached && !isPlaying && (
-        <div className="mt-3 flex items-start gap-2 text-xs text-amber-700 bg-amber-50 p-2 rounded border border-amber-200">
-          <AlertCircle className="w-4 h-4 shrink-0" />
-          <span>Сіз бұл аудионы тыңдау лимитінен асып кеттіңіз. Енді сұрақтарға жауап беруге көшіңіз.</span>
-        </div>
-      )}
+      <p className="text-xs text-blue-500 mt-3 text-center">
+        💡 Аудионы қаншама қаласаңыз сонша рет тыңдай аласыз
+      </p>
     </div>
   );
 };
