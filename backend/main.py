@@ -179,6 +179,9 @@ async def generate_questions(request: GenerateRequest, db: Session = Depends(get
                 type=db_q.type,
                 topic=db_q.topic or "General",
                 difficulty=db_q.difficulty or "medium",
+                languageLevel=(
+                    db_q.language_level if hasattr(db_q, "language_level") else None
+                ),
                 hint=db_q.hint,
             )
         )

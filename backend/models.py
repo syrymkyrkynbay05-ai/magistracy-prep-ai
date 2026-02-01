@@ -49,7 +49,8 @@ class DBQuestion(Base):
         "DBOption", back_populates="question", cascade="all, delete-orphan"
     )
     correct_option_ids = Column(Text)  # Stored as comma-separated IDs or JSON string
-    difficulty = Column(String(20), default="medium")
+    difficulty = Column(String(20), default="medium")  # easy/medium/hard or A/B/C
+    language_level = Column(String(10), nullable=True)  # A1/A2/B1/B2/C for CEFR levels
     hint = Column(Text, nullable=True)
 
 
@@ -82,6 +83,7 @@ class Question(BaseModel):
     type: QuestionType
     topic: str
     difficulty: Optional[str] = "medium"
+    languageLevel: Optional[str] = None  # A1/A2/B1/B2/C for CEFR levels
     hint: Optional[str] = None
 
     class Config:
