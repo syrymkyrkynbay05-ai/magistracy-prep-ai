@@ -23,6 +23,26 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
   const { subjectId, qIndex } = useParams<{ subjectId: string; qIndex: string }>();
   const navigate = useNavigate();
 
+  // Available audio dialogues (10 total)
+  const AUDIO_DIALOGUES = [
+    { id: 1, file: '/audio/dialogue_1.wav', title: 'Travel to Sydney' },
+    { id: 2, file: '/audio/dialogue_2.wav', title: 'Birthday Party' },
+    { id: 3, file: '/audio/dialogue_3.wav', title: 'University Library' },
+    { id: 4, file: '/audio/dialogue_4.wav', title: 'Shopping Return' },
+    { id: 5, file: '/audio/dialogue_5.wav', title: 'Job Interview' },
+    { id: 6, file: '/audio/dialogue_6.wav', title: 'Doctor Appointment' },
+    { id: 7, file: '/audio/dialogue_7.wav', title: 'Asking Directions' },
+    { id: 8, file: '/audio/dialogue_8.wav', title: 'Renting Apartment' },
+    { id: 9, file: '/audio/dialogue_9.wav', title: 'Sports Club' },
+    { id: 10, file: '/audio/dialogue_10.wav', title: 'Ordering Food' },
+  ];
+
+  // Randomly select 2 dialogues on component mount (persisted for this test session)
+  const [selectedDialogues] = useState(() => {
+    const shuffled = [...AUDIO_DIALOGUES].sort(() => Math.random() - 0.5);
+    return [shuffled[0], shuffled[1]];
+  });
+
   // State
   const [answers, setAnswers] = useState<UserAnswers>({});
   
@@ -40,6 +60,13 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
 
   const currentIndex = currentQuestionIndex;
   const currentQuestionId = currentQuestion?.id;
+
+  // Get current audio dialogue based on question index
+  const getCurrentDialogue = () => {
+    if (currentIndex < 5) return selectedDialogues[0];
+    if (currentIndex < 10) return selectedDialogues[1];
+    return null;
+  };
 
   // Modal States
   const [showSections, setShowSections] = useState(false);
@@ -265,7 +292,7 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
                       {/* Question Content */}
                       <div className="flex-1">
                           {/* Audio Player for English Listening Section (First 10 questions) */}
-                          {currentSubjectId === SubjectId.ENGLISH && currentIndex < 10 && (
+                          {currentSubjectId === SubjectId.ENGLISH && currentIndex < 10 && getCurrentDialogue() && (
                               <div className="mb-6">
                                   <div className="bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200 rounded-xl p-4 shadow-sm">
                                       <div className="flex items-center gap-2 mb-3">
@@ -273,15 +300,13 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
                                               ТЫҢДАЛЫМ
                                           </span>
                                           <span className="text-sm font-semibold text-indigo-800">
-                                              {currentIndex < 5 ? 'Dialogue 1: Travel to Sydney' : 'Dialogue 2: Birthday Party'}
+                                              Dialogue {currentIndex < 5 ? '1' : '2'}: {getCurrentDialogue()!.title}
                                           </span>
                                           <span className="text-xs text-indigo-500 ml-auto">
                                               Сұрақ {(currentIndex % 5) + 1}/5
                                           </span>
                                       </div>
-                                      <AudioPlayer 
-                                          src={currentIndex < 5 ? '/audio/dialogue_1.wav' : '/audio/dialogue_2.wav'} 
-                                      />
+                                      <AudioPlayer src={getCurrentDialogue()!.file} />
                                       <p className="text-xs text-indigo-600 mt-2 text-center italic">
                                           💡 Диалогты тыңдап, төмендегі сұраққа жауап беріңіз
                                       </p>
