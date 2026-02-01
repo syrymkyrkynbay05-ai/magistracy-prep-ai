@@ -524,10 +524,26 @@ KT_ENGLISH_QUESTIONS = {
 
 
 def seed_kt_english_questions():
-    """Add КТ format English questions to database"""
+    """Add КТ format English questions to database (replaces old English questions)"""
     db = SessionLocal()
 
     try:
+        # First, delete ALL existing English questions
+        print("Deleting old English questions...")
+        old_questions = (
+            db.query(DBQuestion)
+            .filter(DBQuestion.subject_id == SubjectId.ENGLISH.value)
+            .all()
+        )
+
+        for q in old_questions:
+            # Delete options first
+            db.query(DBOption).filter(DBOption.question_id == q.id).delete()
+            db.delete(q)
+
+        db.commit()
+        print(f"Deleted {len(old_questions)} old English questions.")
+
         # Ensure English subject exists
         english_subject = (
             db.query(DBSubject).filter(DBSubject.id == SubjectId.ENGLISH.value).first()
