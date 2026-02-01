@@ -10,6 +10,7 @@ import AnswerMapModal from './modals/AnswerMapModal';
 import CalculatorModal from './modals/CalculatorModal';
 import PeriodicTableModal from './modals/PeriodicTableModal';
 import SolubilityTableModal from './modals/SolubilityTableModal';
+import AudioPlayer from './AudioPlayer';
 
 interface TestScreenProps {
   questions: Question[];
@@ -263,6 +264,11 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
 
                       {/* Question Content */}
                       <div className="flex-1">
+                          {/* Audio Player for Listening Questions */}
+                          {currentQuestion.type === QuestionType.AUDIO && currentQuestion.audioUrl && (
+                              <AudioPlayer src={currentQuestion.audioUrl} />
+                          )}
+
                           <div className="text-2xl font-serif text-slate-900 leading-relaxed mb-6 font-medium">
                               {currentQuestion.text}
                           </div>

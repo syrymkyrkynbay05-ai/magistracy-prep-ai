@@ -3,199 +3,136 @@
     {
       "id": "dialogue_1",
       "title": "Travel to Sydney",
-      "audioFile": "/audio/audio_dialogue_1_sydney.mp3",
-      "duration": 90,
-      "context": "A woman named Sarah gives travel advice to Ryan who is planning to visit Sydney, Australia.",
+      "audioFile": "/audio/dialogue_1.wav",
+      "duration": 65,
+      "context": "A woman named Sarah gives travel advice to Ryan about Sydney.",
       "questions": [
-        {
-          "id": "audio_1_q1",
-          "questionText": "What is the main topic of this conversation?",
-          "options": [
-            "A) Planning a business trip to Sydney",
-            "B) Getting travel recommendations for Sydney",
-            "C) Discussing the history of Sydney",
-            "D) Booking a hotel in Sydney"
-          ],
-          "correctAnswer": 1,
-          "points": 1
-        },
-        {
-          "id": "audio_1_q2",
-          "questionText": "Which beach does Sarah recommend as a quieter alternative to Bondi Beach?",
-          "options": [
-            "A) Coogee Beach",
-            "B) Palm Beach",
-            "C) Manly Beach",
-            "D) Bronte Beach"
-          ],
-          "correctAnswer": 2,
-          "points": 1
-        },
-        {
-          "id": "audio_1_q3",
-          "questionText": "How can Ryan get to the recommended beach?",
-          "options": [
-            "A) By bus from the city center",
-            "B) By taxi from the airport",
-            "C) By ferry from Circular Quay",
-            "D) By train from Central Station"
-          ],
-          "correctAnswer": 2,
-          "points": 1
-        },
-        {
-          "id": "audio_1_q4",
-          "questionText": "How long does the ferry ride take?",
-          "options": [
-            "A) About fifteen minutes",
-            "B) About thirty minutes",
-            "C) About forty-five minutes",
-            "D) About one hour"
-          ],
-          "correctAnswer": 1,
-          "points": 1
-        },
-        {
-          "id": "audio_1_q5",
-          "questionText": "What Australian food does Sarah recommend?",
-          "options": [
-            "A) Vegemite sandwich",
-            "B) Meat pie",
-            "C) Lamington cake",
-            "D) Pavlova"
-          ],
-          "correctAnswer": 1,
-          "points": 1
-        },
-        {
-          "id": "audio_1_q6",
-          "questionText": "What special fact does Sarah mention about Sydney Fish Market?",
-          "options": [
-            "A) It's the oldest in Australia",
-            "B) It's the cheapest in the world",
-            "C) It's the third largest in the world",
-            "D) It's the most famous in Asia"
-          ],
-          "correctAnswer": 2,
-          "points": 1
-        },
-        {
-          "id": "audio_1_q7",
-          "questionText": "What will the weather be like during Ryan's visit in December?",
-          "options": [
-            "A) Cold and rainy",
-            "B) Warm, around 25-30°C",
-            "C) Hot, around 35-40°C",
-            "D) Mild, around 15-20°C"
-          ],
-          "correctAnswer": 1,
-          "points": 1
-        }
+        { "id": "d1_q1", "questionText": "What is the main topic?", "options": ["A) Business trip", "B) Travel advice", "C) History class", "D) Booking hotels"], "correctAnswer": 1 },
+        { "id": "d1_q2", "questionText": "Which beach is quieter?", "options": ["A) Bondi", "B) Palm", "C) Manly", "D) Coogee"], "correctAnswer": 2 },
+        { "id": "d1_q3", "questionText": "How to get to Manly Beach?", "options": ["A) Bus", "B) Taxi", "C) Ferry", "D) Train"], "correctAnswer": 2 },
+        { "id": "d1_q4", "questionText": "What food is recommended?", "options": ["A) Sandwich", "B) Meat pie", "C) Pizza", "D) Salad"], "correctAnswer": 1 },
+        { "id": "d1_q5", "questionText": "What is special about the Fish Market?", "options": ["A) Oldest", "B) Cheapest", "C) 3rd Largest", "D) Famous"], "correctAnswer": 2 }
       ]
     },
     {
       "id": "dialogue_2",
-      "title": "Birthday Party Planning",
-      "audioFile": "/audio/audio_dialogue_2_birthday.mp3",
-      "duration": 75,
-      "context": "A woman is planning her birthday party with help from her friend Tom.",
+      "title": "Birthday Party",
+      "audioFile": "/audio/dialogue_2.wav",
+      "duration": 70,
+      "context": "Planning a birthday party.",
       "questions": [
-        {
-          "id": "audio_2_q1",
-          "questionText": "When is the woman's birthday party?",
-          "options": [
-            "A) This Friday",
-            "B) This Saturday",
-            "C) Next Sunday",
-            "D) Next Monday"
-          ],
-          "correctAnswer": 1,
-          "points": 1
-        },
-        {
-          "id": "audio_2_q2",
-          "questionText": "What was Tom's first suggestion for the venue?",
-          "options": [
-            "A) A sushi restaurant",
-            "B) A pizza place downtown",
-            "C) A burger restaurant",
-            "D) A Chinese restaurant"
-          ],
-          "correctAnswer": 1,
-          "points": 1
-        },
-        {
-          "id": "audio_2_q3",
-          "questionText": "Why did the woman reject the first suggestion?",
-          "options": [
-            "A) It's too expensive",
-            "B) It's too far away",
-            "C) She's not in the mood for that food",
-            "D) It's closed on Saturdays"
-          ],
-          "correctAnswer": 2,
-          "points": 1
-        },
-        {
-          "id": "audio_2_q4",
-          "questionText": "Where is the chosen restaurant located?",
-          "options": [
-            "A) Near the park",
-            "B) On Main Street",
-            "C) In the shopping mall",
-            "D) By the river"
-          ],
-          "correctAnswer": 1,
-          "points": 1
-        },
-        {
-          "id": "audio_2_q5",
-          "questionText": "How many people will attend the party?",
-          "options": [
-            "A) About ten people",
-            "B) About fifteen people",
-            "C) About twenty people",
-            "D) About twenty-five people"
-          ],
-          "correctAnswer": 1,
-          "points": 1
-        },
-        {
-          "id": "audio_2_q6",
-          "questionText": "What time will the party start?",
-          "options": [
-            "A) Six in the evening",
-            "B) Seven in the evening",
-            "C) Eight in the evening",
-            "D) Nine in the evening"
-          ],
-          "correctAnswer": 1,
-          "points": 1
-        },
-        {
-          "id": "audio_2_q7",
-          "questionText": "What type of cake does the woman want?",
-          "options": [
-            "A) Vanilla cake",
-            "B) Strawberry cake",
-            "C) Chocolate cake",
-            "D) Cheesecake"
-          ],
-          "correctAnswer": 2,
-          "points": 1
-        },
-        {
-          "id": "audio_2_q8",
-          "questionText": "How many people can the private room accommodate?",
-          "options": [
-            "A) Up to fifteen people",
-            "B) Up to twenty people",
-            "C) Up to twenty-five people",
-            "D) Up to thirty people"
-          ],
-          "correctAnswer": 1,
-          "points": 1
-        }
+        { "id": "d2_q1", "questionText": "When is the birthday?", "options": ["A) Friday", "B) Saturday", "C) Sunday", "D) Monday"], "correctAnswer": 1 },
+        { "id": "d2_q2", "questionText": "Why not pizza?", "options": ["A) Expensive", "B) Far away", "C) Not in mood", "D) Closed"], "correctAnswer": 2 },
+        { "id": "d2_q3", "questionText": "How many guests?", "options": ["A) 10", "B) 15", "C) 20", "D) 25"], "correctAnswer": 1 },
+        { "id": "d2_q4", "questionText": "Start time?", "options": ["A) 6 PM", "B) 7 PM", "C) 8 PM", "D) 9 PM"], "correctAnswer": 1 },
+        { "id": "d2_q5", "questionText": "Cake flavor?", "options": ["A) Vanilla", "B) Strawberry", "C) Chocolate", "D) Coffee"], "correctAnswer": 2 }
+      ]
+    },
+    {
+      "id": "dialogue_3",
+      "title": "University Library",
+      "audioFile": "/audio/dialogue_3.wav",
+      "duration": 55,
+      "context": "A student asks a librarian for help.",
+      "questions": [
+        { "id": "d3_q1", "questionText": "What book is the student looking for?", "options": ["A) Macroeconomics", "B) Microeconomics", "C) Calculus", "D) History"], "correctAnswer": 1 },
+        { "id": "d3_q2", "questionText": "What is the problem?", "options": ["A) Library is closed", "B) Book is lost", "C) Book is checked out", "D) Wrong section"], "correctAnswer": 2 },
+        { "id": "d3_q3", "questionText": "How can he access the book?", "options": ["A) Buy it", "B) borrow from friend", "C) Online portal", "D) Wait for return"], "correctAnswer": 2 },
+        { "id": "d3_q4", "questionText": "Library hours during exam week?", "options": ["A) 9 AM - 5 PM", "B) 8 AM - 10 PM", "C) 24 hours", "D) Closed on weekends"], "correctAnswer": 2 },
+        { "id": "d3_q5", "questionText": "When to book study rooms?", "options": ["A) Same day", "B) 2 days in advance", "C) 1 week in advance", "D) No booking needed"], "correctAnswer": 1 }
+      ]
+    },
+    {
+      "id": "dialogue_4",
+      "title": "Shopping Return",
+      "audioFile": "/audio/dialogue_4.wav",
+      "duration": 50,
+      "context": "A customer returns an item to a clothing store.",
+      "questions": [
+        { "id": "d4_q1", "questionText": "What item is being returned?", "options": ["A) Jeans", "B) Shirt", "C) Sweater", "D) Jacket"], "correctAnswer": 2 },
+        { "id": "d4_q2", "questionText": "What is the problem with the item?", "options": ["A) Wrong color", "B) Damaged", "C) Too small", "D) Too expensive"], "correctAnswer": 2 },
+        { "id": "d4_q3", "questionText": "What size does she need?", "options": ["A) Small", "B) Medium", "C) Large", "D) Extra Large"], "correctAnswer": 1 },
+        { "id": "d4_q4", "questionText": "Does the store have the size?", "options": ["A) No", "B) Yes, in red", "C) Yes, in blue", "D) Yes, in black"], "correctAnswer": 2 },
+        { "id": "d4_q5", "questionText": "Where are the fitting rooms?", "options": ["A) Left side", "B) Behind jeans section", "C) Upstairs", "D) Near entrance"], "correctAnswer": 1 }
+      ]
+    },
+    {
+      "id": "dialogue_5",
+      "title": "Job Interview",
+      "audioFile": "/audio/dialogue_5.wav",
+      "duration": 60,
+      "context": "A job interview for a developer position.",
+      "questions": [
+        { "id": "d5_q1", "questionText": "What was the candidate's last role?", "options": ["A) Junior Developer", "B) Team Manager", "C) Project Owner", "D) Analyst"], "correctAnswer": 1 },
+        { "id": "d5_q2", "questionText": "How many people did she manage?", "options": ["A) Three", "B) Five", "C) Ten", "D) Fifteen"], "correctAnswer": 1 },
+        { "id": "d5_q3", "questionText": "How does she handle deadlines?", "options": ["A) Asks for extension", "B) Prioritizes tasks", "C) Hires freelancers", "D) Works weekends only"], "correctAnswer": 1 },
+        { "id": "d5_q4", "questionText": "What did she ask the interviewer?", "options": ["A) About salary", "B) About vacation", "C) About career path", "D) About lunch break"], "correctAnswer": 2 }
+      ]
+    },
+    {
+      "id": "dialogue_6",
+      "title": "Doctor Appointment",
+      "audioFile": "/audio/dialogue_6.wav",
+      "duration": 58,
+      "context": "A patient visits a doctor.",
+      "questions": [
+        { "id": "d6_q1", "questionText": "How long has she felt unwell?", "options": ["A) One day", "B) Three days", "C) One week", "D) Two weeks"], "correctAnswer": 1 },
+        { "id": "d6_q2", "questionText": "Does she have a fever?", "options": ["A) Yes, high fever", "B) Yes, slight fever", "C) No", "D) Not sure"], "correctAnswer": 2 },
+        { "id": "d6_q3", "questionText": "What does the doctor find?", "options": ["A) Low blood pressure", "B) High blood pressure", "C) Irregular heartbeat", "D) Flu"], "correctAnswer": 1 },
+        { "id": "d6_q4", "questionText": "What is the cause?", "options": ["A) Bad food", "B) Lack of sleep", "C) Stress at work", "D) Cold weather"], "correctAnswer": 2 },
+        { "id": "d6_q5", "questionText": "What is the advice?", "options": ["A) Surgery", "B) Rest for 2 days", "C) Go to hospital", "D) Change diet"], "correctAnswer": 1 }
+      ]
+    },
+    {
+      "id": "dialogue_7",
+      "title": "Asking Directions",
+      "audioFile": "/audio/dialogue_7.wav",
+      "duration": 52,
+      "context": "A tourist asks for directions to a museum.",
+      "questions": [
+        { "id": "d7_q1", "questionText": "Where does he want to go?", "options": ["A) Post Office", "B) City Park", "C) Art Museum", "D) Train Station"], "correctAnswer": 2 },
+        { "id": "d7_q2", "questionText": "How many blocks straight?", "options": ["A) One", "B) Two", "C) Three", "D) Four"], "correctAnswer": 1 },
+        { "id": "d7_q3", "questionText": "Where to turn left?", "options": ["A) At the bank", "B) At the post office", "C) At the traffic light", "D) At the shop"], "correctAnswer": 1 },
+        { "id": "d7_q4", "questionText": "How will he get there?", "options": ["A) By Bus 45", "B) By Bus 52", "C) By Taxi", "D) Walking"], "correctAnswer": 3 }
+      ]
+    },
+    {
+      "id": "dialogue_8",
+      "title": "Renting Apartment",
+      "audioFile": "/audio/dialogue_8.wav",
+      "duration": 62,
+      "context": "A phone call about renting an apartment.",
+      "questions": [
+        { "id": "d8_q1", "questionText": "How many bedrooms?", "options": ["A) One", "B) Two", "C) Three", "D) Studio"], "correctAnswer": 1 },
+        { "id": "d8_q2", "questionText": "What is NOT included in rent?", "options": ["A) Water", "B) Heating", "C) Electricity", "D) Parking"], "correctAnswer": 2 },
+        { "id": "d8_q3", "questionText": "What pet does she have?", "options": ["A) Dog", "B) Cat", "C) Bird", "D) Fish"], "correctAnswer": 1 },
+        { "id": "d8_q4", "questionText": "When is the viewing?", "options": ["A) Today at 2 PM", "B) Tomorrow at 2 PM", "C) Saturday at 10 AM", "D) Monday at 9 AM"], "correctAnswer": 1 }
+      ]
+    },
+    {
+      "id": "dialogue_9",
+      "title": "Sports Club",
+      "audioFile": "/audio/dialogue_9.wav",
+      "duration": 58,
+      "context": "Joining a gym.",
+      "questions": [
+        { "id": "d9_q1", "questionText": "How much is the Basic plan?", "options": ["A) $20", "B) $30", "C) $40", "D) $50"], "correctAnswer": 1 },
+        { "id": "d9_q2", "questionText": "What does Premium plan include?", "options": ["A) Personal trainer", "B) Swimming pool", "C) Free food", "D) Massage"], "correctAnswer": 1 },
+        { "id": "d9_q3", "questionText": "What is provided with Premium?", "options": ["A) Shoes", "B) Water bottle", "C) Towels and locker", "D) Headphones"], "correctAnswer": 2 },
+        { "id": "d9_q4", "questionText": "Cancellation notice period?", "options": ["A) 1 week", "B) 2 weeks", "C) 30 days", "D) 60 days"], "correctAnswer": 2 }
+      ]
+    },
+    {
+      "id": "dialogue_10",
+      "title": "Ordering Food",
+      "audioFile": "/audio/dialogue_10.wav",
+      "duration": 55,
+      "context": "Ordering dinner at a restaurant.",
+      "questions": [
+        { "id": "d10_q1", "questionText": "What starter did he order?", "options": ["A) Salad", "B) Tomato soup", "C) Garlic bread", "D) Calamari"], "correctAnswer": 1 },
+        { "id": "d10_q2", "questionText": "What main course did he choose?", "options": ["A) Steak", "B) Chicken", "C) Grilled Salmon", "D) Pasta"], "correctAnswer": 2 },
+        { "id": "d10_q3", "questionText": "What allergy does he have?", "options": ["A) Gluten", "B) Dairy", "C) Nuts", "D) Shellfish"], "correctAnswer": 2 },
+        { "id": "d10_q4", "questionText": "What drink did he order?", "options": ["A) Red wine", "B) White wine", "C) Water", "D) Beer"], "correctAnswer": 1 }
       ]
     }
   ],
@@ -204,6 +141,6 @@
     "ru": "Прослушайте аудио и ответьте на вопросы. Аудио повторяется только 2 раза.",
     "en": "Listen to the audio and answer the questions. The audio can only be played twice."
   },
-  "totalQuestions": 15,
-  "totalPoints": 15
+  "totalQuestions": 45,
+  "totalPoints": 45
 }

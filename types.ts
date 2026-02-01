@@ -7,7 +7,8 @@ export enum SubjectId {
 
 export enum QuestionType {
   SINGLE = 'SINGLE',
-  MULTIPLE = 'MULTIPLE'
+  MULTIPLE = 'MULTIPLE',
+  AUDIO = 'AUDIO'
 }
 
 export enum Difficulty {
@@ -26,6 +27,8 @@ export interface Question {
   subjectId: SubjectId;
   text: string;
   codeSnippet?: string; // For C++ or SQL code blocks
+  audioUrl?: string;    // URL to audio file for listening questions
+  context?: string;     // Additional context (e.g. "Listen to the dialogue...")
   options: Option[];
   correctOptionIds: string[]; // Array for multiple answers
   type: QuestionType;
