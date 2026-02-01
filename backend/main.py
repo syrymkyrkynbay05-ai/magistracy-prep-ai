@@ -104,14 +104,26 @@ async def generate_questions(request: GenerateRequest, db: Session = Depends(get
         )
 
         # 3. Reading questions (35-50): fetch by topic containing 'reading'
-        reading_qs = (
+        # Group by reading_passage to keep Text 1 (35-42) and Text 2 (43-50) together
+        reading_qs_raw = (
             db.query(DBQuestion)
             .filter(DBQuestion.subject_id == request.subject_id.value)
             .filter(DBQuestion.topic.ilike("%reading%"))
-            .order_by(func.random())
-            .limit(16)
             .all()
         )
+
+        # Group by reading_passage and take 8 from each group
+        passage_groups = {}
+        for q in reading_qs_raw:
+            passage = q.reading_passage or "no_passage"
+            if passage not in passage_groups:
+                passage_groups[passage] = []
+            passage_groups[passage].append(q)
+
+        # Take first 8 from each passage group (max 2 groups = 16 questions)
+        reading_qs = []
+        for passage, questions in list(passage_groups.items())[:2]:
+            reading_qs.extend(questions[:8])
 
         # If not enough topic-specific questions, fill with random ones
         all_db_questions = listening_qs + grammar_qs + reading_qs
