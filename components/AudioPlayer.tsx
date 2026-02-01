@@ -78,15 +78,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ src }) => {
   };
 
   return (
-    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4 mb-6 shadow-sm">
-      <div className="flex items-center justify-between mb-3">
-        <h4 className="text-sm font-bold text-blue-800 flex items-center gap-2">
-          <Volume2 className="w-4 h-4" />
-          <span className="bg-blue-600 text-white text-xs px-2 py-0.5 rounded">AUDIO</span>
-          Тыңдалым тапсырмасы
-        </h4>
-      </div>
-
+    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4 shadow-sm">
       <audio
         ref={audioRef}
         src={src}
@@ -130,10 +122,6 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ src }) => {
           <RotateCcw className="w-4 h-4" />
         </button>
       </div>
-
-      <p className="text-xs text-blue-500 mt-3 text-center">
-        💡 Аудионы қаншама қаласаңыз сонша рет тыңдай аласыз
-      </p>
     </div>
   );
 };

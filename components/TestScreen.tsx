@@ -294,23 +294,7 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
                           {/* Audio Player for English Listening Section (First 10 questions) */}
                           {currentSubjectId === SubjectId.ENGLISH && currentIndex < 10 && getCurrentDialogue() && (
                               <div className="mb-6">
-                                  <div className="bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200 rounded-xl p-4 shadow-sm">
-                                      <div className="flex items-center gap-2 mb-3">
-                                          <span className="bg-indigo-600 text-white text-xs px-2 py-1 rounded font-bold">
-                                              ТЫҢДАЛЫМ
-                                          </span>
-                                          <span className="text-sm font-semibold text-indigo-800">
-                                              Dialogue {currentIndex < 5 ? '1' : '2'}: {getCurrentDialogue()!.title}
-                                          </span>
-                                          <span className="text-xs text-indigo-500 ml-auto">
-                                              Сұрақ {(currentIndex % 5) + 1}/5
-                                          </span>
-                                      </div>
-                                      <AudioPlayer src={getCurrentDialogue()!.file} />
-                                      <p className="text-xs text-indigo-600 mt-2 text-center italic">
-                                          💡 Диалогты тыңдап, төмендегі сұраққа жауап беріңіз
-                                      </p>
-                                  </div>
+                                  <AudioPlayer src={getCurrentDialogue()!.file} />
                               </div>
                           )}
 
