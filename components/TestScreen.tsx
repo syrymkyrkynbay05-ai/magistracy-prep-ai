@@ -322,9 +322,19 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
                           {/* Reading Passage for Comprehension Questions */}
                           {currentQuestion.readingPassage && (
                             <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-xl p-5 mb-6 shadow-sm">
-                                <div className="prose prose-sm max-w-none text-slate-700 leading-relaxed">
-                                    <p className="whitespace-pre-line">{currentQuestion.readingPassage}</p>
-                                </div>
+                                {currentQuestion.readingPassage.startsWith('IMAGE:') ? (
+                                    <div className="flex justify-center">
+                                        <img 
+                                            src={currentQuestion.readingPassage.replace('IMAGE:', '')} 
+                                            alt="Question Diagram" 
+                                            className="max-w-full h-auto rounded-lg shadow-sm border border-amber-100"
+                                        />
+                                    </div>
+                                ) : (
+                                    <div className="prose prose-sm max-w-none text-slate-700 leading-relaxed">
+                                        <p className="whitespace-pre-line">{currentQuestion.readingPassage}</p>
+                                    </div>
+                                )}
                             </div>
                           )}
 

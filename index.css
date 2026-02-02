@@ -1,71 +1,133 @@
-/* Mobile-first responsive styles */
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap");
 
-/* Make sidebar collapsible on mobile */
-@media (max-width: 768px) {
-  /* Hide sidebar on mobile by default */
-  .sidebar-desktop {
-    display: none;
-  }
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-  /* Mobile navigation */
-  .mobile-nav {
-    display: flex !important;
-  }
-
-  /* Reduce padding on mobile */
-  .mobile-padding {
-    padding: 0.75rem !important;
-  }
-
-  /* Question strip scrollable on mobile */
-  .question-strip {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  /* Stack buttons vertically on mobile */
-  .button-group-mobile {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  /* Full width buttons on mobile */
-  .button-mobile-full {
-    width: 100%;
-  }
+:root {
+  --brand-primary: #3b82f6;
+  --brand-secondary: #6366f1;
+  --bg-dark: #0a0c10;
+  --card-dark: rgba(255, 255, 255, 0.03);
+  --border-dark: rgba(255, 255, 255, 0.08);
 }
 
-/* Custom scrollbar for question strip */
-.custom-scrollbar::-webkit-scrollbar {
-  height: 6px;
-}
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-}
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #9ca3af;
-  border-radius: 3px;
-}
-
-/* Touch-friendly tap targets */
-@media (max-width: 768px) {
-  button,
-  .tap-target {
-    min-height: 44px;
-    min-width: 44px;
-  }
-}
-
-/* Prevent horizontal scroll on mobile */
-html,
 body {
-  overflow-x: hidden;
-  max-width: 100vw;
+  margin: 0;
+  font-family:
+    "Outfit",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Roboto",
+    "Oxygen",
+    "Ubuntu",
+    "Cantarell",
+    "Fira Sans",
+    "Droid Sans",
+    "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #0f172a;
+  color: #f8fafc;
 }
 
-/* Safe area insets for notched phones */
-@supports (padding: env(safe-area-inset-bottom)) {
-  .safe-area-bottom {
-    padding-bottom: env(safe-area-inset-bottom);
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 10px;
+  border: 4px solid #0f172a;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Glassmorphism Utilities */
+.glass {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-dark {
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Animations */
+@keyframes float {
+  0% {
+    transform: translateY(0px) rotate(0deg);
   }
+  50% {
+    transform: translateY(-20px) rotate(2deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-brand {
+  background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+}
+
+/* Custom Button Styles */
+.btn-premium {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.btn-premium::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.15) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.btn-premium:hover::after {
+  opacity: 1;
+}
+
+@keyframes pulse-soft {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.pulse-glow {
+  animation: pulse-soft 3s infinite;
 }
