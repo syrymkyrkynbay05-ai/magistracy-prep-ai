@@ -55,6 +55,12 @@ const RootApp: React.FC = () => {
     navigate('/home');
   };
 
+  const handlePracticeWrong = (wrongQuestions: Question[]) => {
+    setQuestions(wrongQuestions);
+    setUserAnswers({});
+    navigate('/test');
+  };
+
   return (
     <div className="font-sans">
       <Routes>
@@ -96,7 +102,8 @@ const RootApp: React.FC = () => {
               <ResultScreen 
                 questions={questions}
                 answers={userAnswers}
-                onRestart={handleRestart} 
+                onRestart={handleRestart}
+                onPracticeWrong={handlePracticeWrong}
                 userName={userName}
               />
             ) : (
