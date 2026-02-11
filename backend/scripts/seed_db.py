@@ -10,6 +10,7 @@ if backend_dir not in sys.path:
 from sqlalchemy.orm import Session
 from database import SessionLocal, engine, Base
 from models import DBSubject, DBQuestion, DBOption, SubjectId, QuestionType
+from auth import DBUser  # Ensure 'users' table is registered in Base.metadata
 
 # Static questions database (No AI needed)
 STATIC_QUESTIONS = {
