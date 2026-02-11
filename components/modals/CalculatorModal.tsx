@@ -146,16 +146,16 @@ const CalculatorModal: React.FC<CalculatorModalProps> = ({ isOpen, onClose }) =>
         {/* Windows 11 Style Title Bar */}
         <div 
           onMouseDown={handleMouseDown}
-          className="bg-[#1f1f1f] text-white px-3 py-2 flex items-center justify-between cursor-grab active:cursor-grabbing"
+          className="bg-[#1f1f1f] text-white px-3 py-2 flex items-center justify-between cursor-grab active:cursor-grabbing select-none"
         >
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 pointer-events-none">
             <div className="w-4 h-4 bg-blue-500 rounded-sm flex items-center justify-center">
                <div className="w-2.5 h-0.5 bg-white mb-[1px]" />
                <div className="w-2.5 h-0.5 bg-white" />
             </div>
             <span className="text-[11px] font-medium text-gray-300">Есептегіш</span>
           </div>
-          <div className="flex items-center">
+          <div className="flex items-center" onMouseDown={e => e.stopPropagation()}>
              <button className="p-2 hover:bg-white/10 transition-colors"><Minus className="w-3 h-3 text-gray-400" /></button>
              <button className="p-2 hover:bg-white/10 transition-colors"><Square className="w-2.5 h-2.5 text-gray-400" /></button>
              <button onClick={onClose} className="p-2 hover:bg-[#e81123] transition-colors group">
@@ -165,19 +165,19 @@ const CalculatorModal: React.FC<CalculatorModalProps> = ({ isOpen, onClose }) =>
         </div>
 
         {/* Standard Menu Row */}
-        <div className="flex items-center justify-between px-4 py-1">
+        <div className="flex items-center justify-between px-4 py-1" onMouseDown={e => e.stopPropagation()}>
            <div className="flex items-center gap-4">
              <button className="p-2 hover:bg-white/5 rounded transition-colors"><Menu className="w-5 h-5 text-white" /></button>
-             <h2 className="text-xl font-bold text-white">Стандартты</h2>
+             <h2 className="text-xl font-bold text-white select-none">Стандартты</h2>
              <button className="p-1 hover:bg-white/5 rounded transition-colors"><MonitorUp className="w-4 h-4 text-gray-400" /></button>
            </div>
            <button className="p-2 hover:bg-white/5 rounded transition-colors"><RotateCcw className="w-5 h-5 text-white" /></button>
         </div>
 
         {/* Display Area */}
-        <div className="px-4 py-8 text-right select-none min-h-[120px] flex flex-col justify-end">
-          <div className="text-gray-500 text-sm h-5 overflow-hidden mb-1 font-normal">{equation}</div>
-          <div className="text-white text-6xl font-semibold tracking-tighter overflow-hidden text-ellipsis">
+        <div className="px-4 py-8 text-right select-none min-h-[120px] flex flex-col justify-end" onMouseDown={e => e.stopPropagation()}>
+          <div className="text-gray-500 text-sm h-5 overflow-hidden mb-1 font-normal select-none">{equation}</div>
+          <div className="text-white text-6xl font-semibold tracking-tighter overflow-hidden text-ellipsis select-none">
             {display}
           </div>
         </div>
@@ -188,7 +188,7 @@ const CalculatorModal: React.FC<CalculatorModalProps> = ({ isOpen, onClose }) =>
         </div>
 
         {/* Buttons Grid */}
-        <div className="p-[2px] grid grid-cols-4 gap-[2px] bg-[#1f1f1f]">
+        <div className="p-[2px] grid grid-cols-4 gap-[2px] bg-[#1f1f1f]" onMouseDown={e => e.stopPropagation()}>
           {rows.flat().map((btn, idx) => {
             const isNumber = !isNaN(parseInt(btn)) || btn === '.';
             const isEquals = btn === '=';
@@ -196,9 +196,10 @@ const CalculatorModal: React.FC<CalculatorModalProps> = ({ isOpen, onClose }) =>
             return (
               <button
                 key={idx}
+                onMouseDown={e => e.stopPropagation()}
                 onClick={() => handleButton(btn)}
                 className={`
-                  h-12 rounded-[4px] text-sm font-medium transition-colors
+                  h-12 rounded-[4px] text-sm font-medium transition-colors select-none
                   ${isEquals 
                     ? 'bg-[#60cdff] text-black hover:bg-[#60cdff]/90 font-bold' 
                     : isNumber 
