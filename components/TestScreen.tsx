@@ -12,6 +12,7 @@ import PeriodicTableModal from './modals/PeriodicTableModal';
 import SolubilityTableModal from './modals/SolubilityTableModal';
 import AudioPlayer from './AudioPlayer';
 import ChartRenderer from './ChartRenderer';
+import AntiCheatModal from './modals/AntiCheatModal';
 
 interface TestScreenProps {
   questions: Question[];
@@ -26,6 +27,8 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
 
   // State
   const [answers, setAnswers] = useState<UserAnswers>({});
+  const [warningsCount, setWarningsCount] = useState(0);
+  const [isFullscreen, setIsFullscreen] = useState(document.fullscreenElement !== null);
   
   // Resolve current state from URL
   const currentSubjectId = (subjectId as SubjectId) || SubjectId.ENGLISH;
@@ -57,28 +60,64 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
       e.returnValue = '';
     };
 
-    // 2. Prevent copy and right click
+    // 2. Prevent copy, right click, selection, and drag
     const handleContextMenu = (e: MouseEvent) => e.preventDefault();
     const handleCopy = (e: ClipboardEvent) => e.preventDefault();
+    const handleSelect = (e: Event) => e.preventDefault();
+    const handleDragStart = (e: DragEvent) => e.preventDefault();
+
     const handleKeydown = (e: KeyboardEvent) => {
-      // Block Ctrl+C, Ctrl+V, Ctrl+U (source), F12 (inspect)
-      if ((e.ctrlKey && (e.key === 'c' || e.key === 'v' || e.key === 'u')) || e.key === 'F12') {
+      // Block Ctrl+C, Ctrl+V, Ctrl+U (source), F12 (inspect), PrtSc
+      if ((e.ctrlKey && (e.key === 'c' || e.key === 'v' || e.key === 'u' || e.key === 'p')) || 
+          e.key === 'F12' || e.key === 'PrintScreen') {
         e.preventDefault();
       }
+    };
+
+    // 3. Visibility and Focus Change (Cheating Detection)
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        setWarningsCount(prev => prev + 1);
+      }
+    };
+
+    const handleWindowBlur = () => {
+      setWarningsCount(prev => prev + 1);
+    };
+
+    const handleFullscreenChange = () => {
+      setIsFullscreen(document.fullscreenElement !== null);
     };
 
     window.addEventListener('beforeunload', handleBeforeUnload);
     window.addEventListener('contextmenu', handleContextMenu);
     window.addEventListener('copy', handleCopy);
+    window.addEventListener('selectstart', handleSelect);
+    window.addEventListener('dragstart', handleDragStart);
     window.addEventListener('keydown', handleKeydown);
+    window.addEventListener('blur', handleWindowBlur);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
 
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
       window.removeEventListener('contextmenu', handleContextMenu);
       window.removeEventListener('copy', handleCopy);
+      window.removeEventListener('selectstart', handleSelect);
+      window.removeEventListener('dragstart', handleDragStart);
       window.removeEventListener('keydown', handleKeydown);
+      window.removeEventListener('blur', handleWindowBlur);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
     };
   }, []);
+
+  const enterFullscreen = () => {
+    const docEl = document.documentElement;
+    if (docEl.requestFullscreen) {
+      docEl.requestFullscreen();
+    }
+  };
 
   // Helpers
   const handleAnswer = (optionId: string) => {
@@ -432,6 +471,14 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
           <span className="text-[9px] mt-0.5">Аяқтау</span>
         </button>
       </div>
+
+      {/* ANTI-CHEAT MODAL & WARNINGS */}
+      <AntiCheatModal 
+        warningsCount={warningsCount}
+        isFullscreen={isFullscreen}
+        onEnterFullscreen={enterFullscreen}
+        onAutoFinish={() => onFinish(answers)}
+      />
     </div>
   );
 };
