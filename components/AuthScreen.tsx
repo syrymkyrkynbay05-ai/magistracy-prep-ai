@@ -189,7 +189,7 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
         <div className="text-center mb-10">
           <div className="w-24 h-24 flex items-center justify-center mx-auto mb-4 relative">
              <div className="absolute inset-0 bg-blue-500/20 blur-2xl rounded-full" />
-             <img src="/logo no bg, blue.svg" alt="MagisCore Logo" className="w-full h-full object-contain relative z-10" />
+             <img src="/logo no bg, white.svg" alt="MagisCore Logo" className="w-full h-full object-contain relative z-10" />
           </div>
           <h1 className="text-4xl font-extrabold tracking-tight uppercase">
             Magis<span className="text-blue-500">Core</span>

@@ -2,7 +2,7 @@
 
 <div align="center">
 
-<img src="public/logo no bg, blue.png" alt="MagisCore Logo" width="120">
+<img src="public/logo no bg, white.svg" alt="MagisCore Logo" width="120">
 
 ![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)

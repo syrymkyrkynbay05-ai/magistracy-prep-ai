@@ -67,7 +67,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, isLoading, onVie
             className="flex items-center gap-3 group cursor-pointer"
           >
             <div className="w-10 h-10 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
-              <img src="/logo no bg, blue.svg" alt="MagisCore Logo" className="w-full h-full object-contain" />
+              <img src="/logo no bg, white.svg" alt="MagisCore Logo" className="w-full h-full object-contain" />
             </div>
             <span className="text-xl font-extrabold tracking-tight uppercase whitespace-nowrap">Magis<span className="text-blue-500">Core</span></span>
           </motion.div>
