@@ -17,6 +17,7 @@ const RootApp: React.FC = () => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [userAnswers, setUserAnswers] = useState<UserAnswers>({});
+  const [securityWarnings, setSecurityWarnings] = useState(0);
   const navigate = useNavigate();
 
   // Check auth on mount
@@ -76,8 +77,9 @@ const RootApp: React.FC = () => {
     }
   };
 
-  const handleFinishTest = (answers: UserAnswers) => {
+  const handleFinishTest = (answers: UserAnswers, warnings: number) => {
     setUserAnswers(answers);
+    setSecurityWarnings(warnings);
     navigate('/result');
   };
 
@@ -159,6 +161,7 @@ const RootApp: React.FC = () => {
                 onRestart={handleRestart}
                 onPracticeWrong={handlePracticeWrong}
                 userName={user.full_name}
+                securityWarnings={securityWarnings}
               />
             ) : (
               <Navigate to="/home" replace />

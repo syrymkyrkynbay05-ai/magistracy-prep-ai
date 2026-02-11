@@ -167,14 +167,14 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
         navigate(`/test/${subjectIds[currIdx + 1]}/q/1`);
     } else {
         if(window.confirm("Бұл соңғы пән. Тестті аяқтауға сенімдісіз бе?")) {
-            onFinish(answers);
+            onFinish(answers, warningsCount);
         }
     }
   };
 
   const handleFinish = () => {
     if(window.confirm("Тестті аяқтауға сенімдісіз бе?")) {
-      onFinish(answers);
+      onFinish(answers, warningsCount);
     }
   };
 
@@ -477,7 +477,7 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
         warningsCount={warningsCount}
         isFullscreen={isFullscreen}
         onEnterFullscreen={enterFullscreen}
-        onAutoFinish={() => onFinish(answers)}
+        onAutoFinish={() => onFinish(answers, warningsCount)}
       />
     </div>
   );

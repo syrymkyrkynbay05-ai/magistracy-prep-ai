@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Question, SubjectId, UserAnswers } from '../types';
 import { SUBJECTS } from '../constants';
-import { ChevronDown, ChevronUp, CheckCircle, XCircle, Trophy, Home, RotateCcw, BookOpen, TrendingUp, Target, BarChart3 } from 'lucide-react';
+import { ChevronDown, ChevronUp, CheckCircle, XCircle, Trophy, Home, RotateCcw, BookOpen, TrendingUp, Target, BarChart3, Shield, AlertTriangle, ShieldAlert } from 'lucide-react';
 
 interface ResultScreenProps {
   questions: Question[];
@@ -9,6 +9,7 @@ interface ResultScreenProps {
   onRestart: () => void;
   onPracticeWrong?: (wrongQuestions: Question[]) => void;
   userName: string;
+  securityWarnings: number;
 }
 
 const HISTORY_KEY = 'test_history';
@@ -52,7 +53,7 @@ import { authHeaders } from '../services/authService';
 
 const API_BASE_URL = window.location.hostname === 'localhost' ? 'http://localhost:8000' : '';
 
-const ResultScreen: React.FC<ResultScreenProps> = ({ questions, answers, onRestart, onPracticeWrong, userName }) => {
+const ResultScreen: React.FC<ResultScreenProps> = ({ questions, answers, onRestart, onPracticeWrong, userName, securityWarnings }) => {
   const [expandedSubject, setExpandedSubject] = useState<SubjectId | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
@@ -133,6 +134,49 @@ const ResultScreen: React.FC<ResultScreenProps> = ({ questions, answers, onResta
             <div className="absolute inset-0 flex items-center justify-center text-3xl font-black text-blue-600">
               {Math.round((totalScore/totalQuestions)*100)}%
             </div>
+          </div>
+        </div>
+        
+        {/* Authenticity Report (Anti-Cheat Summary) */}
+        <div className="bg-[#0f172a] rounded-3xl shadow-2xl p-8 mb-8 flex flex-col md:flex-row items-center justify-between gap-8 border border-white/10 relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl pointer-events-none" />
+          
+          <div className="flex-1">
+             <div className="flex items-center gap-3 mb-4">
+                <Shield className="w-6 h-6 text-blue-400" />
+                <h3 className="text-white font-black uppercase tracking-tighter text-xl">Сессия тазалығы (Анти-чит)</h3>
+             </div>
+             
+             <div className="space-y-4">
+                <div className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5">
+                   <div className="text-gray-400 text-sm font-medium">Тәртіп бұзушылық саны:</div>
+                   <div className={`text-xl font-black ${securityWarnings === 0 ? 'text-green-400' : 'text-red-400'}`}>
+                      {securityWarnings} <span className="text-xs text-gray-500">/ 5</span>
+                   </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                   {securityWarnings === 0 ? (
+                      <div className="bg-green-500/10 text-green-400 px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 border border-green-500/20">
+                         <CheckCircle className="w-4 h-4" /> Ешқандай күдікті әрекет байқалмады
+                      </div>
+                   ) : (
+                      <div className="bg-red-500/10 text-red-400 px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 border border-red-500/20">
+                         <AlertTriangle className="w-4 h-4" /> {securityWarnings} рет терезе ауыстырылды
+                      </div>
+                   )}
+                </div>
+             </div>
+          </div>
+
+          <div className="text-center md:text-right">
+             <div className="text-gray-400 font-bold uppercase tracking-widest text-[10px] mb-2 px-2">Сенімділік индексі</div>
+             <div className={`text-6xl font-black leading-none tracking-tighter ${
+                securityWarnings === 0 ? 'text-blue-400' : securityWarnings < 3 ? 'text-orange-400' : 'text-red-500'
+             }`}>
+                {Math.max(0, 100 - (securityWarnings * 20))}%
+             </div>
+             <div className="mt-2 text-[10px] font-bold text-gray-500 uppercase">Authenticity Score</div>
           </div>
         </div>
 
