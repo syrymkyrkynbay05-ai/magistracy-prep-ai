@@ -169,8 +169,8 @@ GitHub-қа push жасаған сайын Railway автоматты түрде
 
 Деплой сәтті болса:
 
-1. Backend: `https://your-backend-url.up.railway.app/` → `{"message": "Magistracy Prep AI API is running with SQLite"}`
-2. Frontend: `https://your-frontend-url.up.railway.app/` → Басты бет көрінуі керек
+1. Backend: `https://your-backend-url.up.railway.app/health` → `{"status": "healthy"}`
+2. Frontend: `https://your-frontend-url.up.railway.app/` → MagisCore басты беті көрінуі керек
 
 ---
 

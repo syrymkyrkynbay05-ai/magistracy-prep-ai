@@ -1,4 +1,5 @@
 import { Question, SubjectId } from "../types";
+import { authHeaders } from "./authService";
 
 // Use localhost:8000 for local development, empty string for production
 const API_BASE_URL = window.location.hostname === 'localhost' ? 'http://localhost:8000' : '';
@@ -10,9 +11,7 @@ export const generateQuestionsForSubject = async (
   try {
     const response = await fetch(`${API_BASE_URL}/generate`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: authHeaders(),
       body: JSON.stringify({
         subject_id: subjectId,
         count: count,

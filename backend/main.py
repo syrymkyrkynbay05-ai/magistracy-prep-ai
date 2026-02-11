@@ -30,15 +30,21 @@ from models import (
     QuestionType,
     CalculateRequest,
     TestResult,
+    DBTestResult,
 )
 from database import get_db, engine, Base
+from auth import DBUser, get_current_user  # Ensure users table is created
+from auth_routes import router as auth_router
 
 load_dotenv()
 
-# Initialize database tables
+# Initialize database tables (including users)
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Magistracy Prep AI Backend")
+
+# Register auth routes
+app.include_router(auth_router)
 
 # Enable CORS for the React frontend
 app.add_middleware(
@@ -66,82 +72,176 @@ async def health():
 
 
 @app.post("/generate", response_model=List[Question])
-async def generate_questions(request: GenerateRequest, db: Session = Depends(get_db)):
+async def generate_questions(
+    request: GenerateRequest,
+    db: Session = Depends(get_db),
+    current_user: DBUser = Depends(get_current_user),
+):
     """
     Generate questions for a subject.
     For English (KT format): 16 listening + 18 grammar + 16 reading = 50 questions
     """
 
-    # For English subject, use KT format structure
+    # For English subject: 16 Listening (DB) + 18 Grammar (DB) + 16 Reading (DB)
     if request.subject_id == SubjectId.ENGLISH:
-        questions = []
+        # Convert DBQuestion -> API Question
+        def to_api_question(db_q: DBQuestion) -> Question:
+            options = [Option(id=opt.id, text=opt.text) for opt in db_q.options]
+            correct_ids = (
+                db_q.correct_option_ids.split(",") if db_q.correct_option_ids else []
+            )
 
-        # 1. Listening questions (1-16): fetch by topic containing 'listening' or 'audio'
-        listening_qs = (
+            # Handle Audio URL stored in reading_passage
+            audio_url = None
+            reading_passage = (
+                db_q.reading_passage if hasattr(db_q, "reading_passage") else None
+            )
+
+            # Parse AUDIO: prefix
+            if reading_passage and reading_passage.startswith("AUDIO:"):
+                audio_url = reading_passage.replace("AUDIO:", "").strip()
+                reading_passage = None  # Clear passage since it's just a URL holder
+
+            return Question(
+                id=db_q.id,
+                subjectId=request.subject_id,
+                text=db_q.text,
+                codeSnippet=db_q.code_snippet,
+                readingPassage=reading_passage,
+                audioUrl=audio_url,
+                options=options,
+                correctOptionIds=correct_ids,
+                type=db_q.type,
+                topic=db_q.topic or "General",
+                difficulty=db_q.difficulty or "medium",
+                languageLevel=(
+                    db_q.language_level if hasattr(db_q, "language_level") else None
+                ),
+                hint=db_q.hint,
+            )
+
+        # 1) Listening questions (1-16): 2 audio texts × 8 questions each
+        # Group questions by their audio file
+        all_listening = (
             db.query(DBQuestion)
             .filter(DBQuestion.subject_id == request.subject_id.value)
-            .filter(
-                DBQuestion.topic.ilike("%listening%")
-                | DBQuestion.topic.ilike("%audio%")
-            )
-            .order_by(func.random())
-            .limit(16)
+            .filter(DBQuestion.topic.ilike("%listening%"))
+            .filter(DBQuestion.reading_passage.like("AUDIO:%"))  # Only with audio URL
             .all()
         )
 
-        # 2. Grammar/Vocabulary questions (17-34): fetch by topic containing 'grammar' or 'vocab'
+        # Group by audio file (reading_passage contains "AUDIO:/english/filename.mp3")
+        audio_groups: dict[str, list] = {}
+        for q in all_listening:
+            audio_key = q.reading_passage if q.reading_passage else "unknown"
+            if audio_key not in audio_groups:
+                audio_groups[audio_key] = []
+            audio_groups[audio_key].append(q)
+
+        # Get list of audio files that have exactly 8 questions
+        valid_audio_keys = [k for k, v in audio_groups.items() if len(v) >= 8]
+
+        # Randomly select 2 audio texts for this test
+        random.shuffle(valid_audio_keys)
+        selected_audio_keys = valid_audio_keys[:2]  # Pick 2 audios
+
+        listening_questions = []
+        for audio_key in selected_audio_keys:
+            group_questions = audio_groups[audio_key][:8]  # Take 8 questions
+
+            # Shuffle question order within the group
+            random.shuffle(group_questions)
+
+            # Convert to API questions with shuffled options
+            for db_q in group_questions:
+                api_q = to_api_question(db_q)
+
+                # Shuffle options order
+                if api_q.options and len(api_q.options) > 1:
+                    # Create mapping of old_id -> new shuffled position
+                    shuffled_options = api_q.options.copy()
+                    random.shuffle(shuffled_options)
+                    api_q.options = shuffled_options
+
+                listening_questions.append(api_q)
+
+        # 2) Grammar/Vocabulary questions (17-34): take from DB excluding listening/reading
         grammar_qs = (
             db.query(DBQuestion)
             .filter(DBQuestion.subject_id == request.subject_id.value)
-            .filter(
-                DBQuestion.topic.ilike("%grammar%")
-                | DBQuestion.topic.ilike("%vocab%")
-                | DBQuestion.topic.ilike("%lexic%")
-            )
+            .filter(~DBQuestion.topic.ilike("%listening%"))
+            .filter(~DBQuestion.topic.ilike("%audio%"))
+            .filter(~DBQuestion.topic.ilike("%reading%"))
             .order_by(func.random())
             .limit(18)
             .all()
         )
 
-        # 3. Reading questions (35-50): fetch by topic containing 'reading'
-        # Group by reading_passage to keep Text 1 (35-42) and Text 2 (43-50) together
-        reading_qs_raw = (
+        # 3) Reading questions (35-50): 2 reading texts × 8 questions each
+        # Group questions by their reading passage
+        all_reading = (
             db.query(DBQuestion)
             .filter(DBQuestion.subject_id == request.subject_id.value)
             .filter(DBQuestion.topic.ilike("%reading%"))
+            .filter(DBQuestion.reading_passage.isnot(None))
+            .filter(DBQuestion.reading_passage != "")
             .all()
         )
 
-        # Group by reading_passage and take 8 from each group
-        passage_groups = {}
-        for q in reading_qs_raw:
-            passage = q.reading_passage or "no_passage"
-            if passage not in passage_groups:
-                passage_groups[passage] = []
-            passage_groups[passage].append(q)
+        # Group by reading passage
+        reading_groups: dict[str, list] = {}
+        for q in all_reading:
+            passage_key = q.reading_passage if q.reading_passage else "unknown"
+            if passage_key not in reading_groups:
+                reading_groups[passage_key] = []
+            reading_groups[passage_key].append(q)
 
-        # Take first 8 from each passage group (max 2 groups = 16 questions)
-        reading_qs = []
-        for passage, questions in list(passage_groups.items())[:2]:
-            reading_qs.extend(questions[:8])
+        # Get list of passages that have at least 8 questions
+        valid_passage_keys = [k for k, v in reading_groups.items() if len(v) >= 8]
 
-        # If not enough topic-specific questions, fill with random ones
-        all_db_questions = listening_qs + grammar_qs + reading_qs
+        # Randomly select 2 reading texts for this test
+        random.shuffle(valid_passage_keys)
+        selected_passage_keys = valid_passage_keys[:2]  # Pick 2 passages
 
-        if len(all_db_questions) < request.count:
-            # Fallback: get random questions to fill the gap
-            existing_ids = [q.id for q in all_db_questions]
+        reading_questions = []
+        for passage_key in selected_passage_keys:
+            group_questions = reading_groups[passage_key][:8]  # Take 8 questions
+
+            # Shuffle question order within the group
+            random.shuffle(group_questions)
+
+            # Convert to API questions with shuffled options
+            for db_q in group_questions:
+                api_q = to_api_question(db_q)
+
+                # Shuffle options order (but correctOptionIds stay the same - they reference by ID)
+                if api_q.options and len(api_q.options) > 1:
+                    shuffled_options = api_q.options.copy()
+                    random.shuffle(shuffled_options)
+                    api_q.options = shuffled_options
+
+                reading_questions.append(api_q)
+
+        questions = (
+            listening_questions
+            + [to_api_question(q) for q in grammar_qs]
+            + reading_questions
+        )
+
+        # If requested count is bigger (or DB pools are short), fill with random non-duplicate DB questions
+        if len(questions) < request.count:
+            existing_ids = {q.id for q in questions}
             additional = (
                 db.query(DBQuestion)
                 .filter(DBQuestion.subject_id == request.subject_id.value)
                 .filter(~DBQuestion.id.in_(existing_ids) if existing_ids else True)
                 .order_by(func.random())
-                .limit(request.count - len(all_db_questions))
+                .limit(request.count - len(questions))
                 .all()
             )
-            all_db_questions.extend(additional)
+            questions.extend([to_api_question(q) for q in additional])
 
-        db_questions = all_db_questions[: request.count]
+        return questions[: request.count]
     else:
         # For other subjects, use random selection
         db_questions = (
@@ -218,8 +318,12 @@ async def get_syllabus(subject_id: str):
 
 
 @app.post("/calculate", response_model=TestResult)
-async def calculate_results(request: CalculateRequest):
-    # Calculation logic remains the same as it works on Pydantic models
+async def calculate_results(
+    request: CalculateRequest,
+    current_user: DBUser = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    # Calculation logic
     total_score = 0
     total_max_score = 0
     correct_count = 0
@@ -246,14 +350,10 @@ async def calculate_results(request: CalculateRequest):
                 q_points = 1
                 correct_count += 1
         else:
-            # DB Questions are usually 2 points
             q_max_points = 2
-
-            # Exact match logic for full points
             is_exact_match = len(user_selected_ids) == len(q.correctOptionIds) and all(
                 id in q.correctOptionIds for id in user_selected_ids
             )
-
             if is_exact_match:
                 q_points = 2
                 correct_count += 1
@@ -264,6 +364,18 @@ async def calculate_results(request: CalculateRequest):
         if q.subjectId in subject_scores:
             subject_scores[q.subjectId]["score"] += q_points
             subject_scores[q.subjectId]["max"] += q_max_points
+
+    # Save to database
+    test_result = DBTestResult(
+        user_id=current_user.id,
+        total_score=total_score,
+        max_score=total_max_score,
+        subject_scores=json.dumps(subject_scores),
+        correct_count=correct_count,
+        total_questions=len(request.questions),
+    )
+    db.add(test_result)
+    db.commit()
 
     return TestResult(
         totalScore=total_score,
@@ -277,16 +389,57 @@ async def calculate_results(request: CalculateRequest):
 # Mount static files for React assets (CSS, JS, images)
 if dist_folder.exists():
     app.mount("/assets", StaticFiles(directory=dist_folder / "assets"), name="assets")
+    if (dist_folder / "audio").exists():
+        app.mount("/audio", StaticFiles(directory=dist_folder / "audio"), name="audio")
+    if (dist_folder / "images").exists():
+        app.mount(
+            "/images", StaticFiles(directory=dist_folder / "images"), name="images"
+        )
+    # Serve english audio files from dist (after npm run build)
+    if (dist_folder / "english").exists():
+        app.mount(
+            "/english",
+            StaticFiles(directory=dist_folder / "english"),
+            name="english_dist",
+        )
+
+# Mount public folder for development (audio files are in public/english)
+public_folder = project_root / "public"
+if public_folder.exists() and (public_folder / "english").exists():
+    # Only mount if not already mounted from dist
+    if not (dist_folder.exists() and (dist_folder / "english").exists()):
+        app.mount(
+            "/english",
+            StaticFiles(directory=public_folder / "english"),
+            name="english_public",
+        )
 
 
-# Catch-all route to serve React SPA (must be last!)
-@app.get("/{full_path:path}")
-async def serve_spa(full_path: str):
-    """Serve React SPA for all non-API routes"""
-    index_file = dist_folder / "index.html"
-    if index_file.exists():
-        return FileResponse(index_file)
-    return {"message": "Magistracy Prep AI API is running with SQLite"}
+# SPA fallback via 404 handler (allows /docs, /redoc to work)
+from starlette.responses import JSONResponse
+
+
+@app.exception_handler(404)
+async def spa_fallback(request, exc):
+    """For 404 GET requests, serve React SPA index.html"""
+    if request.method == "GET":
+        path = request.url.path.lstrip("/")
+        api_prefixes = (
+            "api/",
+            "generate",
+            "submit",
+            "calculate",
+            "file/",
+            "english/",
+            "assets/",
+            "audio/",
+            "images/",
+        )
+        if not any(path.startswith(p) for p in api_prefixes):
+            index_file = dist_folder / "index.html"
+            if index_file.exists():
+                return FileResponse(index_file)
+    return JSONResponse(status_code=404, content={"detail": "Not found"})
 
 
 if __name__ == "__main__":

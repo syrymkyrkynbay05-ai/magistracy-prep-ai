@@ -131,3 +131,70 @@ body {
 .pulse-glow {
   animation: pulse-soft 3s infinite;
 }
+/* Subject Grid (Bento Style) */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.bento-item {
+  position: relative;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 2rem;
+  padding: 2rem;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.bento-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-5px);
+}
+
+.glow-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(59, 130, 246, 0.1) 0%,
+    transparent 80%
+  );
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+.bento-item:hover .glow-overlay {
+  opacity: 1;
+}
+
+/* Background Animated Blobs */
+.blob {
+  position: absolute;
+  filter: blur(80px);
+  z-index: 0;
+  border-radius: 50%;
+  animation: blob-float 20s infinite alternate;
+}
+
+@keyframes blob-float {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(50px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-30px, 40px) scale(0.9);
+  }
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+.hero-mask {
+  mask-image: linear-gradient(to bottom, black 50%, transparent);
+}

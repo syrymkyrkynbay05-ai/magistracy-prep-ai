@@ -2,35 +2,38 @@
   "realKTDialogues": [
     {
       "id": "real_dialogue_1",
-      "title": "Text 1 - Film Reviews",
+      "title": "Text 2 - Film Reviews",
       "audioFile": "/audio/real_dialogue_1.mp3",
       "duration": 129,
       "context": "Listen to the program about film reviews.",
+      "transcript": "Welcome to the film review. Today, we're reviewing some of this week's newest films.\n\nLet's start with the hit, Jungle Fever. This is an unusual one. Some of you may remember last year's TV documentary about a family of tigers in India. Well, this is a cartoon based on that program, and I can report it's great fun for people of any age.\n\nSome of you will be excited to know that the actor Steve Willis is back on our screens. You'll remember him as an action hero, Marty, but in this new film, Call, he's actually a chef working in an Italian pizza takeaway shop in London. Actor Jennifer Peckary plays his manager, and romance is in the air.\n\nDon't miss Swim, a comedy which takes a look at learning to swim as an adult. It's about a twenty-year-old man who wants to join in with his friends when they swim in the lake near his house. So he goes to the local pool to take lessons. Be prepared to laugh until it hurts!",
       "questions": [
-        { "id": "r1_q1", "questionText": "What is the first film that is reviewed?", "options": ["A) Jungle", "B) Swim", "C) Call", "D) Jungle Fever"], "correctAnswer": 0 },
-        { "id": "r1_q2", "questionText": "Which film tells us a love story?", "options": ["A) Call", "B) Jennifer Peckory", "C) Swim", "D) Jungle Fever"], "correctAnswer": 3 },
-        { "id": "r1_q3", "questionText": "Where does the chef in 'Call' work?", "options": ["A) in the zoo", "B) in a swimming pool", "C) an Italian pizza takeaway", "D) in the jungle"], "correctAnswer": 2 },
-        { "id": "r1_q4", "questionText": "What films are reviewed in the program?", "options": ["A) films about animals", "B) new films", "C) old films", "D) classical films"], "correctAnswer": 1 },
-        { "id": "r1_q5", "questionText": "How old is the character of 'Swim'?", "options": ["A) 22", "B) 20", "C) 12", "D) 25"], "correctAnswer": 2 },
-        { "id": "r1_q6", "questionText": "What does the character want to learn?", "options": ["A) training tigers", "B) cooking", "C) being a friend", "D) swimming"], "correctAnswer": 3 },
-        { "id": "r1_q7", "questionText": "What is 'Jungle Fever' about?", "options": ["A) African jungle", "B) Zoo animals", "C) Romance story", "D) Adventure"], "correctAnswer": 2 }
+        { "id": "r1_q1", "questionText": "In which film did Jennifer Peckory play a manager?", "options": ["A) Call", "B) Swim", "C) Jennifer Peckory", "D) Jungle Fever"], "correctAnswer": 0 },
+        { "id": "r1_q2", "questionText": "What skill does the main character in 'Swim' want to learn?", "options": ["A) training tigers", "B) cooking", "C) being a friend", "D) swimming"], "correctAnswer": 3 },
+        { "id": "r1_q3", "questionText": "What is the first film that is reviewed?", "options": ["A) Jungle", "B) Swim", "C) Call", "D) Jungle Fever"], "correctAnswer": 3 },
+        { "id": "r1_q4", "questionText": "Which film tells us a love story?", "options": ["A) Call", "B) Jennifer Peckory", "C) Swim", "D) Jungle Fever"], "correctAnswer": 0 },
+        { "id": "r1_q5", "questionText": "Where does the chef in 'Call' work?", "options": ["A) in the zoo", "B) in a swimming pool", "C) an Italian pizza takeaway", "D) in the jungle"], "correctAnswer": 2 },
+        { "id": "r1_q6", "questionText": "What films are reviewed in the program?", "options": ["A) films about animals", "B) new films", "C) old films", "D) classical films"], "correctAnswer": 1 },
+        { "id": "r1_q7", "questionText": "How old is the character of 'Swim'?", "options": ["A) 22", "B) 20", "C) 12", "D) 25"], "correctAnswer": 1 },
+        { "id": "r1_q8", "questionText": "What film did Steve Willis take part in?", "options": ["A) Swim", "B) Jennifer Peckory", "C) Call", "D) Jungle Fever"], "correctAnswer": 2 }
       ]
     },
     {
       "id": "real_dialogue_2", 
-      "title": "Text 2 - Business Success",
+      "title": "Text 1 - Business Success",
       "audioFile": "/audio/real_dialogue_2.mp3",
       "duration": 57,
       "context": "Listen to the text about Akio Morita and business success.",
+      "transcript": "Great leaders come in all shapes and sizes. They can be anyone from a company CEO to a soccer coach, a small business owner to a group discussion leader. While there are some natural leaders, most great leaders are not born that way. Instead, they learned how to be great over time. So what are these qualities that all great leaders share?\n\nGreat leaders are confident in their abilities and actions. They are not afraid of new challenges and stay calm when things get difficult. Once they decide to do something, they do it. While great leaders are confident, they are not arrogant. Confident leaders usually give comfort to those around them. Arrogant leaders rarely do.\n\nNo one wants to work with people who are not excited about what they are doing. Great leaders are excited about what they do and want to share that feeling with others. Think about a soccer, baseball, or tennis coach who is not excited about the sport. This kind of person hardly ever gets great results.\n\nGreat leaders care about other people and want to help them. When people need help, these leaders make difficult situation less challenging. For example, think about an employee who is having a difficult time finishing some work. A good boss always sees this and offers support.\n\nGood communication skills are important for great leaders. They communicate their ideas clearly and listen carefully. Many top companies have rules that encourage open communication. The tech company, Hewlett-Packard, for example, has an open door rule. Leaders leave their doors open, so employees can stop by and speak to them anytime.\n\nGreat leaders have a goal in mind and do what they need to achieve it. Sony co-founder, Akio Morita, did not succeed for the first time his company tried to sell its first product, a rice cooker. It didn't cook the rice, it burnt it. They sold less than a hundred, but this did not stop Morita, as he went on to create a multi-billion dollar company.",
       "questions": [
-        { "id": "r2_q1", "questionText": "Akio Morita did not succeed the first time when he tried to...", "options": ["A) start a company", "B) sell its first product", "C) become a leader", "D) create a product"], "correctAnswer": 1 },
-        { "id": "r2_q2", "questionText": "According to the text great leaders have...", "options": ["A) negative personality", "B) positive personality", "C) negative qualities outweigh the positive", "D) negative qualities"], "correctAnswer": 1 },
-        { "id": "r2_q3", "questionText": "What do top companies have that makes them successful?", "options": ["A) strict rules", "B) open communication", "C) many workers", "D) big buildings"], "correctAnswer": 1 },
-        { "id": "r2_q4", "questionText": "What is important for success according to the text?", "options": ["A) being rich", "B) having a goal in mind", "C) working alone", "D) being lucky"], "correctAnswer": 1 },
-        { "id": "r2_q5", "questionText": "What did Morita learn from his failure?", "options": ["A) to give up", "B) to try again", "C) to change career", "D) to panic"], "correctAnswer": 1 },
-        { "id": "r2_q6", "questionText": "What is the main message of the text?", "options": ["A) Give up when you fail", "B) Persistence leads to success", "C) Avoid challenges", "D) Money is everything"], "correctAnswer": 1 },
-        { "id": "r2_q7", "questionText": "What company did Morita found?", "options": ["A) Samsung", "B) Sony", "C) Panasonic", "D) LG"], "correctAnswer": 1 },
-        { "id": "r2_q8", "questionText": "How should leaders face difficulty?", "options": ["A) worry a lot", "B) stay calm and focused", "C) ignore problems", "D) blame others"], "correctAnswer": 1 }
+        { "id": "r2_q1", "questionText": "Akio Morita did not succeed the first time when", "options": ["A) his company explained to sell its first product", "B) his company attempted to sell its first product", "C) his company turned to sell its first product", "D) his company decided to sell its first product"], "correctAnswer": 1 },
+        { "id": "r2_q2", "questionText": "The great leaders", "options": ["A) should have the same profession", "B) have to work in the same sphere", "C) may be different people", "D) should have the same major"], "correctAnswer": 2 },
+        { "id": "r2_q3", "questionText": "Many top companies have rules that", "options": ["A) destroy open communication", "B) borrow open communication", "C) support open communication", "D) lend open communication"], "correctAnswer": 2 },
+        { "id": "r2_q4", "questionText": "When great leaders face difficulty", "options": ["A) they worry a lot", "B) they are afraid of it", "C) they run away", "D) they do not panic"], "correctAnswer": 3 },
+        { "id": "r2_q5", "questionText": "Great leaders have a goal in mind and do", "options": ["A) what they need to discover it", "B) what they need to research it", "C) what they need to accomplish it", "D) what they need to scrutinize it"], "correctAnswer": 2 },
+        { "id": "r2_q6", "questionText": "But this did not stop Morita as he", "options": ["A) preferred to create a multi-billion-dollar company", "B) continued to create a multi-billion-dollar company", "C) wanted to create a multi-billion-dollar company", "D) planned to create a multi-billion-dollar company"], "correctAnswer": 1 },
+        { "id": "r2_q7", "questionText": "According to the text great leaders'", "options": ["A) parents are usually rich", "B) negative features outweigh the positive ones", "C) communication skills are their weaknesses", "D) positive features outweigh the negative ones"], "correctAnswer": 3 },
+        { "id": "r2_q8", "questionText": "According to the text great leaders have", "options": ["A) negative personality", "B) positive personality", "C) negative qualities outweigh the positive ones", "D) negative qualities"], "correctAnswer": 1 }
       ]
     }
   ],
@@ -179,7 +182,7 @@
   "testConfig": {
     "realKT": {
       "totalAudioDialogues": 2,
-      "totalQuestions": 15,
+      "totalQuestions": 16,
       "description": "Шынайы КТ форматындағы аудио (PDF-тегі сұрақтармен)"
     },
     "practice": {

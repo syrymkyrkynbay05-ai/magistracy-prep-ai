@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker
 
 # SQLite - файл түрінде сақталатын қарапайым база
 # Ешқандай сервер қажет емес!
-DATABASE_PATH = os.path.join(os.path.dirname(__file__), "magistracy_prep.db")
+DATABASE_PATH = os.path.join(os.path.dirname(__file__), "magiscore.db")
 SQLALCHEMY_DATABASE_URL = f"sqlite:///{DATABASE_PATH}"
 
 engine = create_engine(

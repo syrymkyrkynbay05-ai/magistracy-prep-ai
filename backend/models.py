@@ -1,7 +1,16 @@
 from pydantic import BaseModel
 from typing import List, Optional
 from enum import Enum
-from sqlalchemy import Column, String, Integer, ForeignKey, Enum as SQLEnum, Text
+from datetime import datetime, timezone
+from sqlalchemy import (
+    Column,
+    String,
+    Integer,
+    ForeignKey,
+    Enum as SQLEnum,
+    Text,
+    DateTime,
+)
 from sqlalchemy.orm import relationship
 from database import Base
 
@@ -63,6 +72,24 @@ class DBOption(Base):
     question = relationship("DBQuestion", back_populates="options")
 
 
+class DBTestResult(Base):
+    __tablename__ = "test_results"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    total_score = Column(Integer, nullable=False)
+    max_score = Column(Integer, nullable=False)
+    subject_scores = Column(Text, nullable=False)  # JSON string
+    correct_count = Column(Integer, nullable=False)
+    total_questions = Column(Integer, nullable=False)
+    created_at = Column(
+        DateTime, default=lambda: datetime.now(timezone.utc).replace(tzinfo=None)
+    )
+
+    # Optional: Relationship back to user can be added in auth.py or here
+    # user = relationship("DBUser", back_populates="history")
+
+
 # Pydantic Models for API
 class Option(BaseModel):
     id: str
@@ -77,6 +104,8 @@ class Question(BaseModel):
     subjectId: SubjectId
     text: str
     codeSnippet: Optional[str] = None
+    audioUrl: Optional[str] = None  # URL to audio file for listening questions
+    context: Optional[str] = None  # Listening/reading context shown to the user
     readingPassage: Optional[str] = None  # Reading text for comprehension
     options: List[Option]
     correctOptionIds: List[str]

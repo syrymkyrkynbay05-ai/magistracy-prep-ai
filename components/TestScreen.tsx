@@ -11,6 +11,7 @@ import CalculatorModal from './modals/CalculatorModal';
 import PeriodicTableModal from './modals/PeriodicTableModal';
 import SolubilityTableModal from './modals/SolubilityTableModal';
 import AudioPlayer from './AudioPlayer';
+import ChartRenderer from './ChartRenderer';
 
 interface TestScreenProps {
   questions: Question[];
@@ -22,26 +23,6 @@ interface TestScreenProps {
 const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onFinish, userName }) => {
   const { subjectId, qIndex } = useParams<{ subjectId: string; qIndex: string }>();
   const navigate = useNavigate();
-
-  // Available audio dialogues (10 total)
-  const AUDIO_DIALOGUES = [
-    { id: 1, file: '/audio/dialogue_1.wav', title: 'Travel to Sydney' },
-    { id: 2, file: '/audio/dialogue_2.wav', title: 'Birthday Party' },
-    { id: 3, file: '/audio/dialogue_3.wav', title: 'University Library' },
-    { id: 4, file: '/audio/dialogue_4.wav', title: 'Shopping Return' },
-    { id: 5, file: '/audio/dialogue_5.wav', title: 'Job Interview' },
-    { id: 6, file: '/audio/dialogue_6.wav', title: 'Doctor Appointment' },
-    { id: 7, file: '/audio/dialogue_7.wav', title: 'Asking Directions' },
-    { id: 8, file: '/audio/dialogue_8.wav', title: 'Renting Apartment' },
-    { id: 9, file: '/audio/dialogue_9.wav', title: 'Sports Club' },
-    { id: 10, file: '/audio/dialogue_10.wav', title: 'Ordering Food' },
-  ];
-
-  // Randomly select 2 dialogues on component mount (persisted for this test session)
-  const [selectedDialogues] = useState(() => {
-    const shuffled = [...AUDIO_DIALOGUES].sort(() => Math.random() - 0.5);
-    return [shuffled[0], shuffled[1]];
-  });
 
   // State
   const [answers, setAnswers] = useState<UserAnswers>({});
@@ -60,14 +41,6 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
 
   const currentIndex = currentQuestionIndex;
   const currentQuestionId = currentQuestion?.id;
-
-  // Get current audio dialogue based on question index (КТ format: 16 listening questions)
-  // Questions 1-8: Audio 1, Questions 9-16: Audio 2
-  const getCurrentDialogue = () => {
-    if (currentIndex < 8) return selectedDialogues[0];
-    if (currentIndex < 16) return selectedDialogues[1];
-    return null;
-  };
 
   // Modal States
   const [showSections, setShowSections] = useState(false);
@@ -177,6 +150,12 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
   ];
 
   if (!currentQuestion) return <div>Loading...</div>;
+
+  const isEnglishListening =
+    currentSubjectId === SubjectId.ENGLISH &&
+    (currentQuestion.audioUrl || currentQuestion.topic?.toLowerCase().includes('listening'));
+  const showListeningTranscript =
+    isEnglishListening && !currentQuestion.audioUrl && !!currentQuestion.codeSnippet;
 
   return (
     <div className="flex flex-col h-screen bg-[#F8F9FB] font-sans overflow-hidden">
@@ -292,28 +271,40 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
 
                       {/* Question Content */}
                       <div className="flex-1">
-                          {/* Audio Player for English Listening Section (КТ: First 16 questions) */}
-                          {currentSubjectId === SubjectId.ENGLISH && currentIndex < 16 && getCurrentDialogue() && (
-                              <div className="mb-6">
-                                  <AudioPlayer src={getCurrentDialogue()!.file} />
+                          {/* English Listening (temporary transcript until TTS/audio is enabled) */}
+                          {isEnglishListening && (
+                              <div className="mb-6 space-y-3">
+                                  <div className="text-sm font-semibold text-slate-600">
+                                      <span className="mr-2 inline-flex items-center rounded-full bg-blue-50 px-2 py-0.5 text-xs font-bold text-blue-700 border border-blue-100">
+                                          Тыңдалым
+                                      </span>
+                                      {currentQuestion.audioUrl ? (
+                                          <span>{currentQuestion.context || 'Аудионы тыңдап, сұраққа жауап беріңіз.'}</span>
+                                      ) : (
+                                          <span>TTS әлі қосылмаған. Төмендегі мәтінді оқып, сұрақтарға жауап беріңіз.</span>
+                                      )}
+                                      {!currentQuestion.audioUrl && currentQuestion.context && (
+                                          <div className="mt-1 text-xs font-medium text-slate-500">
+                                              {currentQuestion.context.replace(/^Listen\b/i, 'Read')}
+                                          </div>
+                                      )}
+                                  </div>
+
+                                  {currentQuestion.audioUrl ? (
+                                      <AudioPlayer src={currentQuestion.audioUrl} />
+                                  ) : (
+                                      showListeningTranscript && (
+                                          <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-xl p-5 shadow-sm">
+                                              <div className="prose prose-sm max-w-none text-slate-700 leading-relaxed">
+                                                  <p className="whitespace-pre-line">{currentQuestion.codeSnippet}</p>
+                                              </div>
+                                          </div>
+                                      )
+                                  )}
                               </div>
                           )}
 
-                          {/* Language Level Badge for English */}
-                          {currentSubjectId === SubjectId.ENGLISH && currentQuestion.languageLevel && (
-                              <div className="mb-3">
-                                  <span className={`
-                                      inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider
-                                      ${currentQuestion.languageLevel === 'A1' ? 'bg-green-100 text-green-700' : ''}
-                                      ${currentQuestion.languageLevel === 'A2' ? 'bg-blue-100 text-blue-700' : ''}
-                                      ${currentQuestion.languageLevel === 'B1' ? 'bg-yellow-100 text-yellow-700' : ''}
-                                      ${currentQuestion.languageLevel === 'B2' ? 'bg-orange-100 text-orange-700' : ''}
-                                      ${currentQuestion.languageLevel === 'C' ? 'bg-red-100 text-red-700' : ''}
-                                  `}>
-                                      {currentQuestion.languageLevel} деңгей
-                                  </span>
-                              </div>
-                          )}
+
 
                           <div className="text-2xl font-serif text-slate-900 leading-relaxed mb-6 font-medium">
                               {currentQuestion.text}
@@ -322,7 +313,16 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
                           {/* Reading Passage for Comprehension Questions */}
                           {currentQuestion.readingPassage && (
                             <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-xl p-5 mb-6 shadow-sm">
-                                {currentQuestion.readingPassage.startsWith('IMAGE:') ? (
+                                {currentQuestion.readingPassage.startsWith('CHART:') ? (
+                                    (() => {
+                                        try {
+                                            const chartData = JSON.parse(currentQuestion.readingPassage.replace('CHART:', ''));
+                                            return <ChartRenderer chartData={chartData} />;
+                                        } catch {
+                                            return <p className="text-red-500">Chart parse error</p>;
+                                        }
+                                    })()
+                                ) : currentQuestion.readingPassage.startsWith('IMAGE:') ? (
                                     <div className="flex justify-center">
                                         <img 
                                             src={currentQuestion.readingPassage.replace('IMAGE:', '')} 
@@ -338,7 +338,7 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
                             </div>
                           )}
 
-                          {currentQuestion.codeSnippet && (
+                          {currentQuestion.codeSnippet && !showListeningTranscript && (
                             <div className="bg-[#1E1E1E] text-white p-5 rounded-md shadow-inner font-mono text-sm mb-8 overflow-x-auto border border-gray-700">
                                 <pre>{currentQuestion.codeSnippet}</pre>
                             </div>

@@ -48,10 +48,13 @@ const calculateCEFRLevel = (levelStats: Record<string, { correct: number; total:
   return 'Pre-A1';
 };
 
+import { authHeaders } from '../services/authService';
+
+const API_BASE_URL = window.location.hostname === 'localhost' ? 'http://localhost:8000' : '';
+
 const ResultScreen: React.FC<ResultScreenProps> = ({ questions, answers, onRestart, onPracticeWrong, userName }) => {
   const [expandedSubject, setExpandedSubject] = useState<SubjectId | null>(null);
-  const [showHistory, setShowHistory] = useState(false);
-  const [history, setHistory] = useState<any[]>([]);
+  const [isSaving, setIsSaving] = useState(false);
 
   const subjectResults = Object.values(SUBJECTS).map(subject => {
     const subjectQuestions = questions.filter(q => q.subjectId === subject.id);
@@ -77,16 +80,22 @@ const ResultScreen: React.FC<ResultScreenProps> = ({ questions, answers, onResta
   const totalQuestions = subjectResults.reduce((sum, r) => sum + r.total, 0);
 
   useEffect(() => {
-    const historyItem = {
-      date: new Date().toLocaleString('kk-KZ'),
-      score: totalScore,
-      total: totalQuestions,
-      percentage: totalQuestions > 0 ? Math.round((totalScore / totalQuestions) * 100) : 0,
+    const saveResults = async () => {
+      try {
+        setIsSaving(true);
+        await fetch(`${API_BASE_URL}/calculate`, {
+          method: 'POST',
+          headers: authHeaders(),
+          body: JSON.stringify({ questions, answers }),
+        });
+        console.log("Results saved to database");
+      } catch (error) {
+        console.error("Failed to save results:", error);
+      } finally {
+        setIsSaving(false);
+      }
     };
-    const existing = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
-    const newHistory = [historyItem, ...existing].slice(0, 10);
-    localStorage.setItem(HISTORY_KEY, JSON.stringify(newHistory));
-    setHistory(newHistory);
+    saveResults();
   }, []);
 
   return (

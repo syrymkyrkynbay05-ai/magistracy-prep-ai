@@ -30,6 +30,7 @@ export interface Question {
   audioUrl?: string;    // URL to audio file for listening questions
   context?: string;     // Additional context (e.g. "Listen to the dialogue...")
   readingPassage?: string; // Reading passage text for comprehension questions
+  chartData?: ChartData; // Infographic data for visual questions
   options: Option[];
   correctOptionIds: string[]; // Array for multiple answers
   type: QuestionType;
@@ -38,6 +39,18 @@ export interface Question {
   languageLevel?: string; // A1/A2/B1/B2/C for CEFR levels
   hint?: string; // Explanation for wrong answers
 }
+
+// Chart Data Types for Infographics
+export type ChartData = 
+  | { type: 'bar'; data: number[]; labels: string[]; colors?: string[]; title?: string }
+  | { type: 'pie'; data: number[]; labels: string[]; colors?: string[] }
+  | { type: 'line'; data: number[]; labels: string[]; color?: string }
+  | { type: 'table'; headers: string[]; rows: (string | number)[][] }
+  | { type: 'comparison'; columnA: string; columnB: string }
+  | { type: 'comparison_table'; title?: string; columnA: { header: string; content: string }; columnB: { header: string; content: string }; question?: string }
+  | { type: 'circle'; radius: number; label?: string; showCenter?: boolean }
+  | { type: 'math'; expressions: { label: string; value: string }[]; question?: string };
+
 
 export interface SubjectConfig {
   id: SubjectId;

@@ -1,6 +1,8 @@
-# 🎓 Магистратураға Дайындық (КТ Симулятор)
+# 🎓 MagisCore (КТ Симулятор)
 
 <div align="center">
+
+<img src="public/logo no bg, blue.png" alt="MagisCore Logo" width="120">
 
 ![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
@@ -8,7 +10,7 @@
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?logo=fastapi)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.8-3178C6?logo=typescript)
 
-**Қазақстан магистратурасына түсуге дайындалуға арналған интерактивті тест платформасы**
+**Қазақстан магистратурасына түсуге дайындалуға арналған MagisCore интерактивті тест платформасы**
 
 [Demo](#demo) • [Мүмкіндіктер](#-мүмкіндіктер) • [Орнату](#-орнату) • [Деплой](#-деплой)
 
@@ -28,11 +30,11 @@
 ## ✨ Мүмкіндіктер
 
 ### 📚 Толық КТ Симуляциясы
-- **4 пән бойынша 500+ сұрақ**:
-  - 🌐 Шет тілі (Ағылшын) - 50 сұрақ
-  - 🧠 Оқу дайындығын анықтау (ОДАТ) - 30 сұрақ
-  - 💻 Алгоритмдер және деректер құрылымы - 30 сұрақ
-  - 🗄️ Дерекқорлар (SQL) - 20 сұрақ
+- **4 пән бойынша 800 сапалы сұрақ**:
+  - 🌐 Шет тілі (Ағылшын) - 418 сұрақ (Listening аудио)
+  - 🧠 Оқу дайындығын анықтау (ОДАТ) - 100 сұрақ
+  - 💻 Алгоритмдер және деректер құрылымы - 142 сұрақ
+  - 🗄️ Дерекқорлар (SQL) - 140 сұрақ
 
 ### 🛡️ Анти-чит жүйесі
 - Мәтінді көшіруді бұғаттау (Ctrl+C)
@@ -107,17 +109,9 @@ cd backend
 python seed_db.py
 ```
 
-### 5. Іске қосу
-
-**Backend (1-ші терминал):**
+**Бірден іске қосу (Backend + Frontend):**
 ```bash
-cd backend
-python main.py
-```
-
-**Frontend (2-ші терминал):**
-```bash
-npm run dev
+python start.py
 ```
 
 Сайт: http://localhost:3000
@@ -151,25 +145,27 @@ magistracy-prep-ai/
 │   └── requirements.txt     # Python dependencies
 │
 ├── 📂 components/           # React компоненттері
-│   ├── WelcomeScreen.tsx    # Басты бет
-│   ├── TestScreen.tsx       # Тест беті
-│   ├── ResultScreen.tsx     # Нәтижелер
-│   ├── SyllabusScreen.tsx   # Бағдарлама
-│   └── modals/              # Модалдар
+│   ├── AuthScreen.tsx       # Авторизация (Login/Register/OTP)
+│   ├── WelcomeScreen.tsx    # Басты бет (MagisCore бренді)
+│   ├── TestScreen.tsx       # Тест тапсыру процесі
+│   ├── HistoryScreen.tsx    # Тест нәтижелерінің тарихы
+│   ├── ResultScreen.tsx     # Нәтижелерді талдау және сақтау
+│   └── SyllabusScreen.tsx   # Пәндер бағдарламасы
 │
-├── 📂 Markdown/             # Оқу материалдары
-│   ├── Ағылшын.md
-│   ├── ОДАТ.md
-│   ├── Алгоритмдер.md
-│   └── Дерекқорлар.md
+├── 📂 resources/            # Ресурстар мен оқу материалдары
+│   ├── 📂 Markdown/         # Пәндердің MD силлабустары
+│   └── 📂 shettili/         # Ағылшын тілі материалдары
 │
-├── 📂 docs/                 # Құжаттама
-│   ├── DEPLOYMENT.md
-│   └── API.md
+├── 📂 docs/                 # Жүйелік құжаттама
+│   ├── PROJECT_STATS.md     # Жоба статистикасы
+│   ├── DATABASE.md          # Деректер базасының схемасы
+│   ├── SYSTEM_LOGIC.md      # Жүйе архитектурасы мен логикасы
+│   └── PROJECT_STRUCTURE.md # Папкалар иерархиясы
 │
-├── App.tsx                  # Main React component
+├── App.tsx                  # Негізгі React компоненті
+├── start.py                 # Жобаны іске қосу скрипті
 ├── types.ts                 # TypeScript типтері
-├── constants.ts             # Константалар
+├── constants.ts             # Глобалды константалар
 └── index.html               # HTML entry point
 ```
 
