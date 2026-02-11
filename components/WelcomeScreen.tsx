@@ -49,12 +49,14 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, isLoading, onVie
   };
 
   return (
-    <div className="min-h-screen bg-[#07090d] text-[#f8fafc] selection:bg-blue-500/30 overflow-x-hidden">
+    <div className="min-h-screen bg-[#07090d] text-[#f8fafc] selection:bg-blue-500/30 overflow-x-hidden w-full max-w-[100vw] relative">
       
       {/* Background blobs */}
-      <div className="blob w-[500px] h-[500px] bg-blue-600/10 top-[-100px] right-[-100px]" />
-      <div className="blob w-[400px] h-[400px] bg-purple-600/10 bottom-[20%] left-[-100px]" />
-      <div className="blob w-[300px] h-[300px] bg-emerald-500/5 top-[40%] right-[10%]" />
+      <div className="absolute overflow-hidden inset-0 pointer-events-none">
+        <div className="blob w-[500px] h-[500px] bg-blue-600/10 top-[-100px] -right-[100px]" />
+        <div className="blob w-[400px] h-[400px] bg-purple-600/10 bottom-[20%] -left-[100px]" />
+        <div className="blob w-[300px] h-[300px] bg-emerald-500/5 top-[40%] right-[10%]" />
+      </div>
 
       {/* Navigation */}
       <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? 'py-4 glass-dark border-b border-white/5 shadow-2xl backdrop-blur-2xl' : 'py-8'}`}>
@@ -67,7 +69,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, isLoading, onVie
             <div className="w-10 h-10 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
               <img src="/logo no bg, blue.svg" alt="MagisCore Logo" className="w-full h-full object-contain" />
             </div>
-            <span className="text-xl font-black tracking-tighter uppercase whitespace-nowrap">Magis<span className="text-blue-500">Core</span></span>
+            <span className="text-xl font-extrabold tracking-tight uppercase whitespace-nowrap">Magis<span className="text-blue-500">Core</span></span>
           </motion.div>
 
           <div className="hidden md:flex items-center gap-10">
@@ -151,7 +153,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, isLoading, onVie
               className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-500/10 border border-blue-500/20 rounded-full mb-10"
             >
               <Sparkles className="w-4 h-4 text-blue-400" />
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-400">Education Redefined by AI</span>
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-400">2026 ЖЫЛҒЫ РЕСМИ БАҒДАРЛАМА</span>
             </motion.div>
             
             <motion.h1 
@@ -170,7 +172,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, isLoading, onVie
               className="text-lg md:text-xl text-slate-400 mb-14 max-w-2xl leading-relaxed"
             >
               Магистратураға дайындықтың кәсіби деңгейі. 
-              Жасанды интеллект көмегімен жасалған 5000+ сұрақ, 
+              800-ден астам кәсіби сұрақтар жинағы, 
               Listening аудиолары және терең аналитика.
             </motion.p>
 
@@ -215,11 +217,11 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, isLoading, onVie
               transition={{ delay: 0.3 }}
               className="mt-20 flex flex-wrap items-center justify-center gap-x-12 gap-y-6 opacity-30 grayscale contrast-[0.2] brightness-200"
             >
-               <span className="text-sm font-black tracking-[0.3em] uppercase">Built with Gemini</span>
+               <span className="text-sm font-black tracking-[0.3em] uppercase">СЕНІМДІ ДАЙЫНДЫҚ</span>
                <div className="h-4 w-px bg-white/20 hidden md:block"></div>
-               <span className="text-sm font-black tracking-[0.3em] uppercase">Trusted by Thousands</span>
+               <span className="text-sm font-black tracking-[0.3em] uppercase">МЫҢДАҒАН СТУДЕНТТЕР</span>
                <div className="h-4 w-px bg-white/20 hidden md:block"></div>
-               <span className="text-sm font-black tracking-[0.3em] uppercase">Official spec 2026</span>
+               <span className="text-sm font-black tracking-[0.3em] uppercase">РЕСМИ СПЕЦИФИКАЦИЯ</span>
             </motion.div>
           </div>
         </div>
@@ -240,9 +242,9 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, isLoading, onVie
                   <div className="w-16 h-16 bg-blue-500/10 rounded-2xl flex items-center justify-center border border-blue-500/20">
                     <Globe className="w-8 h-8 text-blue-400" />
                   </div>
-                  <span className="px-4 py-1.5 bg-blue-500/20 text-blue-300 text-[10px] font-black uppercase tracking-widest rounded-full">Listening Included</span>
+                  <span className="px-4 py-1.5 bg-blue-500/20 text-blue-300 text-[10px] font-black uppercase tracking-widest rounded-full">Аудио Мәтіндер</span>
                 </div>
-                <h3 className="text-4xl md:text-5xl font-black mb-4 uppercase italic">English Mastery</h3>
+                <h3 className="text-4xl md:text-5xl font-black mb-4 uppercase italic">Ағылшын Тілі</h3>
                 <p className="text-slate-400 text-lg max-w-md font-medium">80+ аудио мәтіндер және кешенді грамматикалық сұрақтар жинағы.</p>
               </div>
               <div className="relative z-10 mt-12 flex items-center justify-between">
@@ -263,7 +265,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, isLoading, onVie
                 <div className="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center mb-10 border border-purple-500/20">
                   <Brain className="w-6 h-6 text-purple-400" />
                 </div>
-                <h3 className="text-2xl font-black mb-3 uppercase">TGO Logic</h3>
+                <h3 className="text-2xl font-black mb-3 uppercase">Оқу Сауаттылығы</h3>
                 <p className="text-slate-500 text-sm font-medium">Сыни ойлау және мәтінмен жұмыс.</p>
               </div>
               <div className="relative z-10 flex items-center justify-between mt-8">
@@ -282,7 +284,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, isLoading, onVie
                 <div className="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center mb-10 border border-emerald-500/20">
                   <Zap className="w-6 h-6 text-emerald-400" />
                 </div>
-                <h3 className="text-2xl font-black mb-3 uppercase">Algorithms</h3>
+                <h3 className="text-2xl font-black mb-3 uppercase">Информатика</h3>
                 <p className="text-slate-500 text-sm font-medium">C++, Data Structures & Logic.</p>
               </div>
               <div className="relative z-10 flex items-center justify-between mt-8">
@@ -297,7 +299,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, isLoading, onVie
               className="md:col-span-4 bento-item flex flex-col items-center justify-center text-center border-white/10"
             >
               <div className="text-6xl font-black mb-2 gradient-text">80%</div>
-              <div className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em]">Success Rate</div>
+              <div className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em]">Жоғары Көрсеткіш</div>
               <p className="text-xs text-slate-500 mt-6 max-w-[200px]">Бізбен дайындалған студенттердің грантқа түсу көрсеткіші.</p>
             </motion.div>
 
@@ -311,7 +313,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, isLoading, onVie
                 <div className="w-12 h-12 bg-blue-400/10 rounded-xl flex items-center justify-center mb-10 border border-blue-400/20">
                   <Database className="w-6 h-6 text-blue-400" />
                 </div>
-                <h3 className="text-2xl font-black mb-3 uppercase">Databases</h3>
+                <h3 className="text-2xl font-black mb-3 uppercase">Деректер Қоры</h3>
                 <p className="text-slate-500 text-sm font-medium">SQL, ER-models and Logic.</p>
               </div>
               <div className="relative z-10 flex items-center justify-between mt-8">
@@ -335,7 +337,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, isLoading, onVie
             {[
               { icon: Zap, title: "Жедел Аналитика", desc: "Тест соңында әр пән бойынша терең талдау және пайыздық көрсеткішті алыңыз." },
               { icon: Shield, title: "Ресми Формат", desc: "2026 жылғы жаңа спецификацияға толық сәйкес келетін сұрақтар жинағы." },
-              { icon: MessageSquare, title: "AI Hint System", desc: "Қиын сұрақтар бойынша жасанды интеллектен түсіндірмелер мен кеңестер." },
+              { icon: MessageSquare, title: "Түсіндірмелер", desc: "Қиын сұрақтар бойынша арнайы түсіндірмелер мен кеңестер." },
             ].map((feature, i) => (
               <motion.div 
                 key={i}
@@ -358,18 +360,18 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, isLoading, onVie
       <section className="py-24 border-y border-white/5">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-around gap-12 text-center">
             <div>
-              <div className="text-5xl font-black mb-2 tracking-tighter">50K+</div>
-              <div className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em]">Solved Questions</div>
+              <div className="text-5xl font-black mb-2 tracking-tighter">800+</div>
+              <div className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em]">Шешілген Сұрақтар</div>
             </div>
             <div className="h-12 w-px bg-white/5 hidden md:block"></div>
             <div>
-              <div className="text-5xl font-black mb-2 tracking-tighter">120+</div>
-              <div className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em]">Audio Lessons</div>
+              <div className="text-5xl font-black mb-2 tracking-tighter">80+</div>
+              <div className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em]">Аудио Сабақтар</div>
             </div>
             <div className="h-12 w-px bg-white/5 hidden md:block"></div>
             <div>
               <div className="text-5xl font-black mb-2 tracking-tighter">4.9/5</div>
-              <div className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em]">User Rating</div>
+              <div className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em]">Пайдаланушы Рейтингі</div>
             </div>
         </div>
       </section>
@@ -413,9 +415,9 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, isLoading, onVie
               <div>
                  <h4 className="font-black text-white mb-10 uppercase tracking-[0.2em] text-[10px]">Платформа</h4>
                  <nav className="flex flex-col gap-6 font-bold text-slate-500 text-sm">
-                    <button className="text-left hover:text-white transition-colors">English Prep</button>
-                    <button className="text-left hover:text-white transition-colors">TGO Logic</button>
-                    <button className="text-left hover:text-white transition-colors">Informatics</button>
+                    <button className="text-left hover:text-white transition-colors">Ағылшын тілі</button>
+                    <button className="text-left hover:text-white transition-colors">Оқу сауаттылығы</button>
+                    <button className="text-left hover:text-white transition-colors">Информатика</button>
                  </nav>
               </div>
 
@@ -429,8 +431,8 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, isLoading, onVie
               </div>
 
               <div>
-                 <h4 className="font-black text-white mb-10 uppercase tracking-[0.2em] text-[10px]">Contact Us</h4>
-                 <p className="font-black text-white text-lg mb-8 tracking-tight">ask@magiscore.ai</p>
+                 <h4 className="font-black text-white mb-10 uppercase tracking-[0.2em] text-[10px]">Байланыс</h4>
+                 <p className="font-black text-white text-lg mb-8 tracking-tight">help@magiscore.kz</p>
                  <div className="flex gap-4">
                     {[1,2,3].map(i => (
                       <div key={i} className="w-10 h-10 glass rounded-xl flex items-center justify-center border-white/5 hover:border-white/20 transition-colors cursor-pointer">
