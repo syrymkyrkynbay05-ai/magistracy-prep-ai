@@ -30,4 +30,4 @@ ENV PYTHONPATH=/app/backend
 ENV PORT=8000
 
 # Initialize DB and start
-CMD ["sh", "-c", "python3 backend/seed_db.py && python3 backend/main.py"]
+CMD ["sh", "-c", "python3 backend/scripts/seed_db.py && python3 backend/main.py"]
