@@ -19,6 +19,7 @@ from sqlalchemy import func
 from typing import List, Optional
 from dotenv import load_dotenv
 from pathlib import Path
+from urllib.parse import unquote
 
 from models import (
     DBQuestion,
@@ -421,9 +422,22 @@ from starlette.responses import JSONResponse
 
 @app.exception_handler(404)
 async def spa_fallback(request, exc):
-    """For 404 GET requests, serve React SPA index.html"""
+    """
+    Improved SPA fallback:
+    1. Try to serve the exact file from 'dist' (e.g., logos, favicons).
+    2. If not found and is a GET request, serve 'index.html'.
+    3. Otherwise return 404 JSON.
+    """
     if request.method == "GET":
-        path = request.url.path.lstrip("/")
+        path = unquote(request.url.path.lstrip("/"))
+
+        # 1. Check if the file exists in dist (for logos, favicons, etc. at root)
+        if dist_folder.exists() and path:
+            potential_file = dist_folder / path
+            if potential_file.exists() and potential_file.is_file():
+                return FileResponse(potential_file)
+
+        # 2. SPA Fallback for non-API routes
         api_prefixes = (
             "api/",
             "generate",
@@ -434,11 +448,13 @@ async def spa_fallback(request, exc):
             "assets/",
             "audio/",
             "images/",
+            "auth/",
         )
         if not any(path.startswith(p) for p in api_prefixes):
             index_file = dist_folder / "index.html"
             if index_file.exists():
                 return FileResponse(index_file)
+
     return JSONResponse(status_code=404, content={"detail": "Not found"})
 
 
