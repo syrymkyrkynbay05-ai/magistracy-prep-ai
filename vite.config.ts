@@ -14,22 +14,16 @@ export default defineConfig(({ mode }) => {
         react(),
         VitePWA({
           registerType: 'autoUpdate',
-          includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
           manifest: {
-            name: 'MagisCore - Магистратураға дайындық',
+            name: 'MagisCore',
             short_name: 'MagisCore',
-            description: 'Магистратураға дайындықтың кәсіби платформасы',
+            description: 'Магистратураға дайындық',
             theme_color: '#07090d',
             background_color: '#07090d',
             display: 'standalone',
             icons: [
               {
-                src: '/logo no bg, blue.svg',
-                sizes: '192x192',
-                type: 'image/svg+xml'
-              },
-              {
-                src: '/logo no bg, blue.svg',
+                src: 'logo no bg, white.svg',
                 sizes: '512x512',
                 type: 'image/svg+xml'
               }
@@ -37,6 +31,9 @@ export default defineConfig(({ mode }) => {
           }
         })
       ],
+      build: {
+        target: 'esnext'
+      },
       define: {
         'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
         'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)

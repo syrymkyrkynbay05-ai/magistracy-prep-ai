@@ -1,6 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { X, Minus, Square, Menu, RotateCcw, MonitorUp, Backspace, GripHorizontal } from 'lucide-react';
-import { motion } from 'framer-motion';
+import React, { useState, useRef, useEffect } from 'react';
+import { X, Minus, Square, Menu, RotateCcw, MonitorUp, Delete } from 'lucide-react';
 
 interface CalculatorModalProps {
   isOpen: boolean;
@@ -11,7 +10,9 @@ const CalculatorModal: React.FC<CalculatorModalProps> = ({ isOpen, onClose }) =>
   const [display, setDisplay] = useState('0');
   const [equation, setEquation] = useState('');
   const [hasResult, setHasResult] = useState(false);
-  const constraintsRef = useRef(null);
+  const [position, setPosition] = useState({ x: 100, y: 100 });
+  const [isDragging, setIsDragging] = useState(false);
+  const dragStartPos = useRef({ x: 0, y: 0 });
 
   if (!isOpen) return null;
 
@@ -107,18 +108,46 @@ const CalculatorModal: React.FC<CalculatorModalProps> = ({ isOpen, onClose }) =>
     }
   };
 
+  // Manual Drag Logic
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    dragStartPos.current = {
+      x: e.clientX - position.x,
+      y: e.clientY - position.y
+    };
+  };
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isDragging) return;
+      setPosition({
+        x: e.clientX - dragStartPos.current.x,
+        y: e.clientY - dragStartPos.current.y
+      });
+    };
+    const handleMouseUp = () => setIsDragging(false);
+
+    if (isDragging) {
+      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('mouseup', handleMouseUp);
+    }
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isDragging]);
+
   return (
-    <div className="fixed inset-0 pointer-events-none z-[100]" ref={constraintsRef}>
-      <motion.div 
-        drag
-        dragConstraints={constraintsRef}
-        dragElastic={0}
-        dragMomentum={false}
-        initial={{ x: '100px', y: '100px' }}
+    <div className="fixed inset-0 pointer-events-none z-[100]">
+      <div 
+        style={{ left: position.x, top: position.y }}
         className="pointer-events-auto bg-[#1f1f1f] rounded-lg shadow-2xl w-[320px] overflow-hidden border border-white/10 absolute cursor-default flex flex-col"
       >
         {/* Windows 11 Style Title Bar */}
-        <div className="bg-[#1f1f1f] text-white px-3 py-2 flex items-center justify-between cursor-grab active:cursor-grabbing">
+        <div 
+          onMouseDown={handleMouseDown}
+          className="bg-[#1f1f1f] text-white px-3 py-2 flex items-center justify-between cursor-grab active:cursor-grabbing"
+        >
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 bg-blue-500 rounded-sm flex items-center justify-center">
                <div className="w-2.5 h-0.5 bg-white mb-[1px]" />
@@ -177,12 +206,12 @@ const CalculatorModal: React.FC<CalculatorModalProps> = ({ isOpen, onClose }) =>
                       : 'bg-[#323232] text-white hover:bg-[#3b3b3b]'}
                 `}
               >
-                {btn === '⌫' ? <Backspace className="w-4 h-4 mx-auto" /> : btn}
+                {btn === '⌫' ? <Delete className="w-4 h-4 mx-auto" /> : btn}
               </button>
             );
           })}
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 };
