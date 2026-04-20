@@ -132,10 +132,10 @@ const SyllabusScreen: React.FC<SyllabusScreenProps> = ({ onBack }) => {
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto flex-1 w-full flex flex-col lg:flex-row gap-6 p-4 md:p-8 lg:px-6 relative z-10">
+      <div className="max-w-7xl mx-auto flex-1 w-full flex flex-col lg:flex-row gap-4 md:gap-6 p-2 md:p-8 lg:px-6 relative z-10 overflow-hidden">
 
-        {/* Sidebar Tabs */}
-        <aside className="w-full lg:w-72 shrink-0 space-y-3">
+        {/* Sidebar Tabs - Horizontal on Mobile, Vertical on Desktop */}
+        <aside className="w-full lg:w-72 shrink-0 flex lg:flex-col gap-2 md:gap-3 overflow-x-auto lg:overflow-x-visible custom-scrollbar px-2 lg:px-0 pb-2 lg:pb-0">
           {subjects.map((sub) => {
             const isActive = currentSubject === sub.id;
             return (
@@ -143,7 +143,7 @@ const SyllabusScreen: React.FC<SyllabusScreenProps> = ({ onBack }) => {
                 key={sub.id}
                 onClick={() => navigate(`/program/${sub.id}`)}
                 className={`
-                  w-full flex items-center p-3 rounded-2xl transition-all duration-300 transform outline-none
+                  flex-shrink-0 lg:w-full flex items-center p-3 rounded-2xl transition-all duration-300 transform outline-none whitespace-nowrap lg:whitespace-normal
                   ${isActive
                     ? `${sub.activeBg} text-white shadow-xl ${sub.shadow} scale-[1.02]`
                     : 'bg-white/80 backdrop-blur-md text-slate-700 hover:bg-white hover:shadow-lg border border-white hover:scale-[1.01]'}
@@ -164,7 +164,7 @@ const SyllabusScreen: React.FC<SyllabusScreenProps> = ({ onBack }) => {
             );
           })}
 
-          <div className="mt-6 p-6 bg-gradient-to-br from-indigo-900 via-slate-900 to-[#07090D] rounded-3xl text-white shadow-2xl relative overflow-hidden group border border-white/10">
+          <div className="hidden lg:block mt-6 p-6 bg-gradient-to-br from-indigo-900 via-slate-900 to-[#07090D] rounded-3xl text-white shadow-2xl relative overflow-hidden group border border-white/10">
             <div className="absolute -top-10 -right-10 w-40 h-40 bg-blue-500/20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700 ease-in-out" />
             <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-purple-500/20 rounded-full blur-3xl" />
 

@@ -171,9 +171,9 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, isLoading, onVie
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="text-6xl md:text-8xl font-black mb-10 leading-[0.95] tracking-tighter italic uppercase"
+              className="text-4xl md:text-8xl font-black mb-6 md:mb-10 leading-[1.1] md:leading-[0.95] tracking-tighter italic uppercase px-4 md:px-0"
             >
-              Болашағыңды <br />
+              Болашағыңды <br className="hidden md:block" />
               <span className="gradient-text drop-shadow-[0_0_30px_rgba(255,255,255,0.1)]">Бүгін Анықта.</span>
             </motion.h1>
             
@@ -255,8 +255,8 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, isLoading, onVie
                   </div>
                   <span className="px-4 py-1.5 bg-blue-500/20 text-blue-300 text-[10px] font-black uppercase tracking-widest rounded-full">Аудио Мәтіндер</span>
                 </div>
-                <h3 className="text-4xl md:text-5xl font-black mb-4 uppercase italic">Ағылшын Тілі</h3>
-                <p className="text-slate-400 text-lg max-w-md font-medium">80+ аудио мәтіндер және кешенді грамматикалық сұрақтар жинағы.</p>
+                <h3 className="text-3xl md:text-5xl font-black mb-4 uppercase italic">Ағылшын Тілі</h3>
+                <p className="text-slate-400 text-base md:text-lg max-w-md font-medium">80+ аудио мәтіндер және кешенді грамматикалық сұрақтар жинағы.</p>
               </div>
               <div className="relative z-10 mt-12 flex items-center justify-between">
                 <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em]">{SUBJECTS[SubjectId.ENGLISH].totalQuestions} сұрақ</span>
@@ -397,8 +397,8 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, isLoading, onVie
            >
               <Award className="text-blue-400 w-10 h-10" />
            </motion.div>
-           <h2 className="text-5xl md:text-8xl font-black mb-10 tracking-tighter italic uppercase leading-[0.9]">Грантқа бір <br/> қадам қалды.</h2>
-           <p className="text-slate-500 text-xl mb-16 font-medium">Өз мүмкіндігіңді бүгін сынап көр.</p>
+           <h2 className="text-4xl md:text-8xl font-black mb-10 tracking-tighter italic uppercase leading-[1.1] md:leading-[0.9]">Грантқа бір <br className="hidden md:block"/> қадам қалды.</h2>
+           <p className="text-slate-500 text-lg md:text-xl mb-12 md:mb-16 font-medium">Өз мүмкіндігіңді бүгін сынап көр.</p>
            <button 
              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
              className="px-16 py-6 gradient-brand rounded-full font-black text-2xl shadow-[0_20px_50px_rgba(59,130,246,0.3)] hover:scale-105 transition-all active:scale-95 uppercase tracking-tighter"

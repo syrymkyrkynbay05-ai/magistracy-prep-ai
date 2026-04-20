@@ -26,7 +26,6 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
   // State
   const [answers, setAnswers] = useState<UserAnswers>({});
   const [warningsCount, setWarningsCount] = useState(0);
-  const [isFullscreen, setIsFullscreen] = useState(document.fullscreenElement !== null);
   
   // Resolve current state from URL
   const currentSubjectId = (subjectId as SubjectId) || SubjectId.ENGLISH;
@@ -114,7 +113,7 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
     };
 
     const handleFullscreenChange = () => {
-      setIsFullscreen(document.fullscreenElement !== null);
+      // Fullscreen state removed per request
     };
 
     window.addEventListener('beforeunload', handleBeforeUnload);
@@ -141,10 +140,7 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
   }, []);
 
   const enterFullscreen = () => {
-    const docEl = document.documentElement;
-    if (docEl.requestFullscreen) {
-      docEl.requestFullscreen();
-    }
+    // Logic removed per request
   };
 
   // Helpers
@@ -233,8 +229,8 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
               </div>
           </div>
 
-          <div className="flex items-center justify-center bg-[#E74C3C] px-3 md:px-6 py-1 rounded-full shadow-inner border border-red-400 absolute left-1/2 -translate-x-1/2">
-             <span className="font-mono font-bold text-sm md:text-base tracking-widest">{formatTime(timeLeft)}</span>
+          <div className="flex items-center justify-center bg-[#E74C3C] px-2 md:px-6 py-1 rounded-full shadow-inner border border-red-400 absolute left-1/2 -translate-x-1/2 min-w-[70px] md:min-w-[120px]">
+             <span className="font-mono font-bold text-xs md:text-base tracking-widest">{formatTime(timeLeft)}</span>
           </div>
 
           <button 
@@ -307,7 +303,7 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
               </div>
 
               {/* Main Question Card Area */}
-              <div className="flex-1 overflow-y-auto bg-white p-4 md:px-8 md:py-6">
+              <div className="flex-1 overflow-y-auto bg-white p-3 md:px-8 md:py-6 pb-24 md:pb-6">
                   <div className="max-w-6xl mx-auto h-full flex flex-col">
                       
                       {/* Nav Bar - Mobile Responsive */}
@@ -320,11 +316,11 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
                               &lt; Алдыңғы
                           </button>
                           
-                          <div className="text-center order-1 md:order-2">
+                          <div className="text-center order-1 md:order-2 flex flex-col items-center">
                              <div className="text-sm md:text-lg font-bold text-slate-800 uppercase tracking-tight">
                                 {SUBJECTS[currentSubjectId].name}
                              </div>
-                             <span className="text-slate-500 font-semibold text-xs md:hidden">Сұрақ {currentIndex + 1}/{currentSubjectQuestions.length}</span>
+                             <span className="text-slate-500 font-bold text-[10px] md:hidden bg-slate-100 px-2 py-0.5 rounded mt-1">Сұрақ {currentIndex + 1} / {currentSubjectQuestions.length}</span>
                           </div>
 
                           <div className="flex items-center gap-2 md:gap-4 w-full md:w-auto order-3">
@@ -376,7 +372,7 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
 
 
 
-                          <div className="text-2xl font-serif text-slate-900 leading-relaxed mb-6 font-medium">
+                           <div className="text-lg md:text-2xl font-sans text-slate-900 leading-relaxed mb-6 font-semibold">
                               {currentQuestion.text}
                           </div>
 
@@ -423,18 +419,21 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
                                       <div 
                                           key={option.id}
                                           onClick={() => handleAnswer(option.id)}
-                                          className="flex items-start gap-4 p-2 rounded hover:bg-slate-50 cursor-pointer group select-none transition-colors"
+                                          className={`
+                                            flex items-start gap-3 md:gap-4 p-3 md:p-2 rounded-xl md:rounded hover:bg-slate-50 cursor-pointer group select-none transition-all active:scale-[0.98] border border-transparent
+                                            ${isSelected ? 'bg-blue-50/50 border-blue-100' : ''}
+                                          `}
                                       >
                                           {/* Checkbox Square Style for ALL Types */}
                                           <div className={`
-                                              w-6 h-6 border-2 flex items-center justify-center bg-white rounded-[3px] shadow-sm mt-0.5
+                                              w-5 h-5 md:w-6 md:h-6 border-2 flex items-center justify-center bg-white rounded-[4px] md:rounded-[3px] shadow-sm mt-0.5 shrink-0
                                               ${isSelected ? 'border-[#3498DB] bg-blue-50' : 'border-gray-300 group-hover:border-[#3498DB]'}
                                           `}>
-                                              {isSelected && <div className="w-3.5 h-3.5 bg-[#3498DB] rounded-[1px]"></div>}
+                                              {isSelected && <div className="w-3 h-3 md:w-3.5 md:h-3.5 bg-[#3498DB] rounded-[1px]"></div>}
                                           </div>
 
-                                          <div className="text-lg text-slate-800 font-serif leading-snug pt-0.5">
-                                              <span className="font-bold mr-2 uppercase">{letter})</span>
+                                          <div className="text-base md:text-lg text-slate-800 font-sans leading-snug pt-0.5">
+                                              <span className="font-bold mr-2 uppercase text-[#3498DB]">{letter})</span>
                                               {option.text}
                                           </div>
                                       </div>
@@ -496,8 +495,8 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
       {/* ANTI-CHEAT MODAL & WARNINGS */}
       <AntiCheatModal 
         warningsCount={warningsCount}
-        isFullscreen={isFullscreen}
-        onEnterFullscreen={enterFullscreen}
+        isFullscreen={true} // Fullscreen check disabled
+        onEnterFullscreen={() => {}} // No action needed
         onAutoFinish={() => onFinish(answers, warningsCount)}
       />
     </div>
