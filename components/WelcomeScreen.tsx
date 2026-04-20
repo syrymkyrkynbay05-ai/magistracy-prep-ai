@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { SUBJECTS } from '../constants';
 import { SubjectId } from '../types';
+import FlashcardsModal from './modals/FlashcardsModal';
 
 interface WelcomeScreenProps {
   onStart: (name: string) => void;
@@ -23,6 +24,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, isLoading, onVie
   const [error, setError] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [showFlashcards, setShowFlashcards] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -73,6 +75,9 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, isLoading, onVie
           </motion.div>
 
           <div className="hidden md:flex items-center gap-10">
+            <button onClick={() => setShowFlashcards(true)} className="text-sm font-bold text-slate-400 hover:text-white transition-colors tracking-widest uppercase flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-blue-400" /> Карточкалар
+            </button>
             <button onClick={onViewProgram} className="text-sm font-bold text-slate-400 hover:text-white transition-colors tracking-widest uppercase">Бағдарлама</button>
             <button onClick={onViewHistory} className="text-sm font-bold text-slate-400 hover:text-white transition-colors tracking-widest uppercase">Тарих</button>
             <a href="#subjects" className="text-sm font-bold text-slate-400 hover:text-white transition-colors tracking-widest uppercase">Пәндер</a>
@@ -105,6 +110,12 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, isLoading, onVie
               className="md:hidden glass-dark border-t border-white/5 overflow-hidden"
             >
               <div className="flex flex-col p-6 gap-6">
+                <button 
+                  onClick={() => { setShowFlashcards(true); setIsMenuOpen(false); }} 
+                  className="text-left text-sm font-bold text-slate-400 hover:text-white transition-colors tracking-[0.2em] uppercase flex items-center gap-3"
+                >
+                  <Sparkles className="w-4 h-4 text-blue-400" /> Карточкалар
+                </button>
                 <button 
                   onClick={() => { onViewProgram(); setIsMenuOpen(false); }} 
                   className="text-left text-sm font-bold text-slate-400 hover:text-white transition-colors tracking-[0.2em] uppercase flex items-center gap-3"
@@ -455,6 +466,8 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, isLoading, onVie
            </div>
         </div>
       </footer>
+
+      <FlashcardsModal isOpen={showFlashcards} onClose={() => setShowFlashcards(false)} />
     </div>
   );
 };

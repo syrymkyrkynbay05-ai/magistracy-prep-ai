@@ -12,7 +12,7 @@ def run_backend():
     python_cmd = venv_python if os.path.exists(venv_python) else sys.executable
 
     return subprocess.Popen(
-        [python_cmd, "-m", "uvicorn", "main:app", "--reload", "--port", "8000"],
+        [python_cmd, "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--reload", "--port", "8000"],
         cwd=backend_dir,
     )
 
@@ -30,7 +30,7 @@ if __name__ == "__main__":
         frontend_proc = run_frontend()
 
         print("\n✅ Both servers are running!")
-        print("🔗 Frontend: http://localhost:5173")
+        print("🔗 Frontend: http://localhost:3000")
         print("🔗 Backend API: http://localhost:8000")
         print("\nPress Ctrl+C to stop both servers.")
 

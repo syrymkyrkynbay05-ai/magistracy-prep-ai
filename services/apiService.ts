@@ -1,8 +1,10 @@
 import { Question, SubjectId } from "../types";
 import { authHeaders } from "./authService";
 
-// Use localhost:8000 for local development, empty string for production
-const API_BASE_URL = window.location.hostname === 'localhost' ? 'http://localhost:8000' : '';
+// Use localhost or local IP for local development, empty string for production
+const API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname.match(/^\d{1,3}\./)) 
+  ? `http://${window.location.hostname}:8000` 
+  : '';
 
 export const generateQuestionsForSubject = async (
   subjectId: SubjectId, 

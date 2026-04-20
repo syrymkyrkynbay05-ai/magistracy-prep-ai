@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, Navigate } from 'react-router-dom';
 import { Question, SubjectId, UserAnswers, QuestionType } from '../types';
 import { SUBJECTS } from '../constants';
@@ -8,8 +8,6 @@ import { Menu, User, FileText, Map, Calculator, Table, FlaskConical, LogOut } fr
 import SectionsModal from './modals/SectionsModal';
 import AnswerMapModal from './modals/AnswerMapModal';
 import CalculatorModal from './modals/CalculatorModal';
-import PeriodicTableModal from './modals/PeriodicTableModal';
-import SolubilityTableModal from './modals/SolubilityTableModal';
 import AudioPlayer from './AudioPlayer';
 import ChartRenderer from './ChartRenderer';
 import AntiCheatModal from './modals/AntiCheatModal';
@@ -49,8 +47,38 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
   const [showSections, setShowSections] = useState(false);
   const [showAnswerMap, setShowAnswerMap] = useState(false);
   const [showCalculator, setShowCalculator] = useState(false);
-  const [showPeriodicTable, setShowPeriodicTable] = useState(false);
-  const [showSolubilityTable, setShowSolubilityTable] = useState(false);
+
+  // Timer State & Logic
+  const [timeLeft, setTimeLeft] = useState(durationMinutes * 60);
+  const latestData = useRef({ answers, warningsCount });
+
+  useEffect(() => {
+    latestData.current = { answers, warningsCount };
+  }, [answers, warningsCount]);
+
+  useEffect(() => {
+    const timerId = setInterval(() => {
+      setTimeLeft(prev => {
+        if (prev <= 1) {
+          clearInterval(timerId);
+          setTimeout(() => {
+            alert("Уақыт аяқталды! Тест автоматты түрде аяқталады.");
+            onFinish(latestData.current.answers, latestData.current.warningsCount);
+          }, 0);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(timerId);
+  }, [onFinish]);
+
+  const formatTime = (seconds: number) => {
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = seconds % 60;
+    return `${h > 0 ? h.toString().padStart(2, '0') + ':' : ''}${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+  };
 
   // Anti-cheat and Refresh Prevention
   useEffect(() => {
@@ -184,8 +212,6 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
     { icon: <FileText className="w-6 h-6" />, label: "Бөлімдер", onClick: () => setShowSections(true) },
     { icon: <Map className="w-6 h-6" />, label: "Жауап картасы", onClick: () => setShowAnswerMap(true) },
     { icon: <Calculator className="w-6 h-6" />, label: "Калькулятор", onClick: () => setShowCalculator(true) },
-    { icon: <Table className="w-6 h-6" />, label: "Менделеев кестесі", onClick: () => setShowPeriodicTable(true) },
-    { icon: <FlaskConical className="w-6 h-6" />, label: "Ерігіштік кестесі", onClick: () => setShowSolubilityTable(true) },
   ];
 
   if (!currentQuestion) return <div>Loading...</div>;
@@ -206,6 +232,11 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
                  <span>{userName || 'Пердеев Азамат'}</span>
               </div>
           </div>
+
+          <div className="flex items-center justify-center bg-[#E74C3C] px-3 md:px-6 py-1 rounded-full shadow-inner border border-red-400 absolute left-1/2 -translate-x-1/2">
+             <span className="font-mono font-bold text-sm md:text-base tracking-widest">{formatTime(timeLeft)}</span>
+          </div>
+
           <button 
               onClick={handleNextSubject}
               className="bg-white text-[#348FE2] px-2 md:px-4 py-1 rounded-[3px] text-[10px] md:text-xs font-bold hover:bg-slate-50 transition shadow-sm uppercase tracking-tight whitespace-nowrap"
@@ -440,16 +471,6 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
       <CalculatorModal 
         isOpen={showCalculator}
         onClose={() => setShowCalculator(false)}
-      />
-
-      <PeriodicTableModal 
-        isOpen={showPeriodicTable}
-        onClose={() => setShowPeriodicTable(false)}
-      />
-
-      <SolubilityTableModal 
-        isOpen={showSolubilityTable}
-        onClose={() => setShowSolubilityTable(false)}
       />
 
       {/* Mobile Bottom Navigation - Only visible on mobile */}

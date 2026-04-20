@@ -8,54 +8,95 @@ interface CalculatorModalProps {
 
 const CalculatorModal: React.FC<CalculatorModalProps> = ({ isOpen, onClose }) => {
   const [display, setDisplay] = useState('0');
-  const [equation, setEquation] = useState('');
-  const [hasResult, setHasResult] = useState(false);
+  const [prevValue, setPrevValue] = useState<number | null>(null);
+  const [operator, setOperator] = useState<string | null>(null);
+  const [waitingForNewValue, setWaitingForNewValue] = useState(false);
+  
   const [position, setPosition] = useState({ x: 100, y: 100 });
   const [isDragging, setIsDragging] = useState(false);
   const dragStartPos = useRef({ x: 0, y: 0 });
 
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isDragging) return;
+      setPosition({
+        x: e.clientX - dragStartPos.current.x,
+        y: e.clientY - dragStartPos.current.y
+      });
+    };
+    const handleMouseUp = () => setIsDragging(false);
+
+    if (isDragging) {
+      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('mouseup', handleMouseUp);
+    }
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isDragging, position]);
+
   if (!isOpen) return null;
 
   const handleNumber = (num: string) => {
-    if (hasResult) {
-      setDisplay(num);
-      setEquation('');
-      setHasResult(false);
-    } else if (display === '0' && num !== '.') {
-      setDisplay(num);
-    } else if (num === '.' && display.includes('.')) {
-      return;
+    if (waitingForNewValue) {
+      setDisplay(num === '.' ? '0.' : num);
+      setWaitingForNewValue(false);
     } else {
-      setDisplay(display + num);
+      if (num === '.' && display.includes('.')) return;
+      setDisplay(display === '0' && num !== '.' ? num : display + num);
     }
   };
 
-  const handleOperator = (op: string) => {
-    setEquation(display + ' ' + op + ' ');
-    setDisplay('0');
-    setHasResult(false);
+  const calculate = (a: number, b: number, op: string): number => {
+    switch (op) {
+      case '+': return a + b;
+      case '-': return a - b;
+      case '×': return a * b;
+      case '÷': return b === 0 ? NaN : a / b;
+      default: return b;
+    }
+  };
+
+  const handleOperator = (nextOp: string) => {
+    const inputValue = parseFloat(display);
+
+    if (prevValue === null) {
+      setPrevValue(inputValue);
+    } else if (operator && !waitingForNewValue) {
+      const result = calculate(prevValue, inputValue, operator);
+      const formattedResult = Number.isInteger(result) ? result : parseFloat(result.toFixed(8));
+      setDisplay(String(formattedResult));
+      setPrevValue(formattedResult);
+    }
+
+    setOperator(nextOp);
+    setWaitingForNewValue(true);
   };
 
   const handleEquals = () => {
-    try {
-      const fullEquation = equation + display;
-      const sanitized = fullEquation.replace(/×/g, '*').replace(/÷/g, '/');
-      const result = eval(sanitized);
-      // Format result to avoid very long decimals
+    if (!operator || prevValue === null) return;
+    
+    const inputValue = parseFloat(display);
+    const result = calculate(prevValue, inputValue, operator);
+    
+    if (isNaN(result)) {
+      setDisplay('Қате');
+    } else {
       const formattedResult = Number.isInteger(result) ? result : parseFloat(result.toFixed(8));
       setDisplay(String(formattedResult));
-      setEquation('');
-      setHasResult(true);
-    } catch {
-      setDisplay('Қате');
-      setHasResult(true);
     }
+    
+    setPrevValue(null);
+    setOperator(null);
+    setWaitingForNewValue(true);
   };
 
   const handleClear = () => {
     setDisplay('0');
-    setEquation('');
-    setHasResult(false);
+    setPrevValue(null);
+    setOperator(null);
+    setWaitingForNewValue(false);
   };
 
   const handleClearEntry = () => {
@@ -63,6 +104,7 @@ const CalculatorModal: React.FC<CalculatorModalProps> = ({ isOpen, onClose }) =>
   };
 
   const handleBackspace = () => {
+    if (waitingForNewValue) return;
     if (display.length > 1) {
       setDisplay(display.slice(0, -1));
     } else {
@@ -72,16 +114,17 @@ const CalculatorModal: React.FC<CalculatorModalProps> = ({ isOpen, onClose }) =>
 
   const handleMathFunc = (type: string) => {
     const val = parseFloat(display);
+    if (isNaN(val)) return;
     let res = 0;
     switch(type) {
       case '1/x': res = 1 / val; break;
       case 'x²': res = val * val; break;
-      case '√': res = Math.sqrt(val); break;
+      case '√': res = val < 0 ? NaN : Math.sqrt(val); break;
       case '%': res = val / 100; break;
       case '±': res = -val; break;
     }
-    setDisplay(String(Number.isInteger(res) ? res : parseFloat(res.toFixed(8))));
-    setHasResult(true);
+    setDisplay(isNaN(res) ? 'Қате' : String(Number.isInteger(res) ? res : parseFloat(res.toFixed(8))));
+    setWaitingForNewValue(true);
   };
 
   const rows = [
@@ -94,6 +137,8 @@ const CalculatorModal: React.FC<CalculatorModalProps> = ({ isOpen, onClose }) =>
   ];
 
   const handleButton = (btn: string) => {
+    if (display === 'Қате' && btn !== 'C' && btn !== 'CE') return;
+
     if (!isNaN(parseInt(btn))) handleNumber(btn);
     else {
       switch (btn) {
@@ -117,26 +162,6 @@ const CalculatorModal: React.FC<CalculatorModalProps> = ({ isOpen, onClose }) =>
     };
   };
 
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!isDragging) return;
-      setPosition({
-        x: e.clientX - dragStartPos.current.x,
-        y: e.clientY - dragStartPos.current.y
-      });
-    };
-    const handleMouseUp = () => setIsDragging(false);
-
-    if (isDragging) {
-      window.addEventListener('mousemove', handleMouseMove);
-      window.addEventListener('mouseup', handleMouseUp);
-    }
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
-    };
-  }, [isDragging]);
-
   return (
     <div className="fixed inset-0 pointer-events-none z-[100]">
       <div 
@@ -155,7 +180,7 @@ const CalculatorModal: React.FC<CalculatorModalProps> = ({ isOpen, onClose }) =>
             </div>
             <span className="text-[11px] font-medium text-gray-300">Есептегіш</span>
           </div>
-          <div className="flex items-center" onMouseDown={e => e.stopPropagation()}>
+          <div className="flex items-center">
              <button className="p-2 hover:bg-white/10 transition-colors"><Minus className="w-3 h-3 text-gray-400" /></button>
              <button className="p-2 hover:bg-white/10 transition-colors"><Square className="w-2.5 h-2.5 text-gray-400" /></button>
              <button onClick={onClose} className="p-2 hover:bg-[#e81123] transition-colors group">
@@ -165,30 +190,32 @@ const CalculatorModal: React.FC<CalculatorModalProps> = ({ isOpen, onClose }) =>
         </div>
 
         {/* Standard Menu Row */}
-        <div className="flex items-center justify-between px-4 py-1" onMouseDown={e => e.stopPropagation()}>
+        <div className="flex items-center justify-between px-4 py-1">
            <div className="flex items-center gap-4">
              <button className="p-2 hover:bg-white/5 rounded transition-colors"><Menu className="w-5 h-5 text-white" /></button>
              <h2 className="text-xl font-bold text-white select-none">Стандартты</h2>
              <button className="p-1 hover:bg-white/5 rounded transition-colors"><MonitorUp className="w-4 h-4 text-gray-400" /></button>
            </div>
-           <button className="p-2 hover:bg-white/5 rounded transition-colors"><RotateCcw className="w-5 h-5 text-white" /></button>
+           <button onClick={handleClear} className="p-2 hover:bg-white/5 rounded transition-colors"><RotateCcw className="w-5 h-5 text-white" /></button>
         </div>
 
         {/* Display Area */}
-        <div className="px-4 py-8 text-right select-none min-h-[120px] flex flex-col justify-end" onMouseDown={e => e.stopPropagation()}>
-          <div className="text-gray-500 text-sm h-5 overflow-hidden mb-1 font-normal select-none">{equation}</div>
+        <div className="px-4 py-8 text-right select-none min-h-[120px] flex flex-col justify-end">
+          <div className="text-gray-500 text-sm h-5 overflow-hidden mb-1 font-normal select-none">
+            {prevValue !== null && operator ? `${prevValue} ${operator}` : ''}
+          </div>
           <div className="text-white text-6xl font-semibold tracking-tighter overflow-hidden text-ellipsis select-none">
             {display}
           </div>
         </div>
 
         {/* Memory Row */}
-        <div className="flex justify-around px-2 py-2 text-[11px] font-bold text-gray-400 opacity-60">
+        <div className="flex justify-around px-2 py-2 text-[11px] font-bold text-gray-400 opacity-60 select-none">
            <span>MC</span><span>MR</span><span>M+</span><span>M-</span><span>MS</span><span>Mv</span>
         </div>
 
         {/* Buttons Grid */}
-        <div className="p-[2px] grid grid-cols-4 gap-[2px] bg-[#1f1f1f]" onMouseDown={e => e.stopPropagation()}>
+        <div className="p-[2px] grid grid-cols-4 gap-[2px] bg-[#1f1f1f]">
           {rows.flat().map((btn, idx) => {
             const isNumber = !isNaN(parseInt(btn)) || btn === '.';
             const isEquals = btn === '=';
@@ -196,7 +223,6 @@ const CalculatorModal: React.FC<CalculatorModalProps> = ({ isOpen, onClose }) =>
             return (
               <button
                 key={idx}
-                onMouseDown={e => e.stopPropagation()}
                 onClick={() => handleButton(btn)}
                 className={`
                   h-12 rounded-[4px] text-sm font-medium transition-colors select-none
