@@ -10,7 +10,6 @@ import AnswerMapModal from './modals/AnswerMapModal';
 import CalculatorModal from './modals/CalculatorModal';
 import AudioPlayer from './AudioPlayer';
 import ChartRenderer from './ChartRenderer';
-import AntiCheatModal from './modals/AntiCheatModal';
 
 interface TestScreenProps {
   questions: Question[];
@@ -25,7 +24,6 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
 
   // State
   const [answers, setAnswers] = useState<UserAnswers>({});
-  const [warningsCount, setWarningsCount] = useState(0);
   
   // Resolve current state from URL
   const currentSubjectId = (subjectId as SubjectId) || SubjectId.ENGLISH;
@@ -49,11 +47,11 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
 
   // Timer State & Logic
   const [timeLeft, setTimeLeft] = useState(durationMinutes * 60);
-  const latestData = useRef({ answers, warningsCount });
+  const latestData = useRef({ answers });
 
   useEffect(() => {
-    latestData.current = { answers, warningsCount };
-  }, [answers, warningsCount]);
+    latestData.current = { answers };
+  }, [answers]);
 
   useEffect(() => {
     const timerId = setInterval(() => {
@@ -62,7 +60,7 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
           clearInterval(timerId);
           setTimeout(() => {
             alert("Уақыт аяқталды! Тест автоматты түрде аяқталады.");
-            onFinish(latestData.current.answers, latestData.current.warningsCount);
+            onFinish(latestData.current.answers, 0);
           }, 0);
           return 0;
         }
@@ -77,70 +75,6 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
     const m = Math.floor((seconds % 3600) / 60);
     const s = seconds % 60;
     return `${h > 0 ? h.toString().padStart(2, '0') + ':' : ''}${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-  };
-
-  // Anti-cheat and Refresh Prevention
-  useEffect(() => {
-    // 1. Prevent refresh
-    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      e.preventDefault();
-      e.returnValue = '';
-    };
-
-    // 2. Prevent copy, right click, selection, and drag
-    const handleContextMenu = (e: MouseEvent) => e.preventDefault();
-    const handleCopy = (e: ClipboardEvent) => e.preventDefault();
-    const handleSelect = (e: Event) => e.preventDefault();
-    const handleDragStart = (e: DragEvent) => e.preventDefault();
-
-    const handleKeydown = (e: KeyboardEvent) => {
-      // Block Ctrl+C, Ctrl+V, Ctrl+U (source), F12 (inspect), PrtSc
-      if ((e.ctrlKey && (e.key === 'c' || e.key === 'v' || e.key === 'u' || e.key === 'p')) || 
-          e.key === 'F12' || e.key === 'PrintScreen') {
-        e.preventDefault();
-      }
-    };
-
-    // 3. Visibility and Focus Change (Cheating Detection)
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === 'hidden') {
-        setWarningsCount(prev => prev + 1);
-      }
-    };
-
-    const handleWindowBlur = () => {
-      setWarningsCount(prev => prev + 1);
-    };
-
-    const handleFullscreenChange = () => {
-      // Fullscreen state removed per request
-    };
-
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    window.addEventListener('contextmenu', handleContextMenu);
-    window.addEventListener('copy', handleCopy);
-    window.addEventListener('selectstart', handleSelect);
-    window.addEventListener('dragstart', handleDragStart);
-    window.addEventListener('keydown', handleKeydown);
-    window.addEventListener('blur', handleWindowBlur);
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    document.addEventListener('fullscreenchange', handleFullscreenChange);
-
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-      window.removeEventListener('contextmenu', handleContextMenu);
-      window.removeEventListener('copy', handleCopy);
-      window.removeEventListener('selectstart', handleSelect);
-      window.removeEventListener('dragstart', handleDragStart);
-      window.removeEventListener('keydown', handleKeydown);
-      window.removeEventListener('blur', handleWindowBlur);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-      document.removeEventListener('fullscreenchange', handleFullscreenChange);
-    };
-  }, []);
-
-  const enterFullscreen = () => {
-    // Logic removed per request
   };
 
   // Helpers
@@ -191,14 +125,14 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
         navigate(`/test/${subjectIds[currIdx + 1]}/q/1`);
     } else {
         if(window.confirm("Бұл соңғы пән. Тестті аяқтауға сенімдісіз бе?")) {
-            onFinish(answers, warningsCount);
+            onFinish(answers, 0);
         }
     }
   };
 
   const handleFinish = () => {
     if(window.confirm("Тестті аяқтауға сенімдісіз бе?")) {
-      onFinish(answers, warningsCount);
+      onFinish(answers, 0);
     }
   };
 
@@ -492,13 +426,6 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
         </button>
       </div>
 
-      {/* ANTI-CHEAT MODAL & WARNINGS */}
-      <AntiCheatModal 
-        warningsCount={warningsCount}
-        isFullscreen={true} // Fullscreen check disabled
-        onEnterFullscreen={() => {}} // No action needed
-        onAutoFinish={() => onFinish(answers, warningsCount)}
-      />
     </div>
   );
 };
