@@ -219,7 +219,7 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
     isEnglishListening && !currentQuestion.audioUrl && !!currentQuestion.codeSnippet;
 
   return (
-    <div className="flex flex-col h-screen bg-[#F8F9FB] font-sans overflow-hidden">
+    <div className="flex flex-col bg-[#F8F9FB] font-sans overflow-hidden" style={{ height: '100dvh' }}>
       {/* 1. Full Width Top Header (Dark Blue) - Mobile Responsive */}
       <header className="bg-[#348FE2] h-[48px] md:h-[48px] flex items-center justify-between px-2 md:px-4 text-white shadow-md z-50 shrink-0">
           <div className="flex items-center gap-2 md:gap-4">
@@ -303,8 +303,8 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
               </div>
 
               {/* Main Question Card Area */}
-              <div className="flex-1 overflow-y-auto bg-white p-3 md:px-8 md:py-6 pb-24 md:pb-6">
-                  <div className="max-w-6xl mx-auto h-full flex flex-col">
+              <div className="flex-1 overflow-y-auto bg-white p-3 md:px-8 md:py-6 pb-40 md:pb-6">
+                  <div className="max-w-6xl mx-auto h-full flex flex-col pt-2">
                       
                       {/* Nav Bar - Mobile Responsive */}
                       <div className="flex flex-col md:flex-row items-center justify-between pb-4 border-b-2 border-slate-200 mb-4 md:mb-6 gap-3 md:gap-0">
