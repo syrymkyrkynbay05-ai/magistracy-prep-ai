@@ -14,18 +14,30 @@ export default defineConfig(({ mode }) => {
         react(),
         VitePWA({
           registerType: 'autoUpdate',
+          includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
           manifest: {
             name: 'MagisCore',
             short_name: 'MagisCore',
             description: 'Магистратураға дайындық',
-            theme_color: '#07090d',
-            background_color: '#07090d',
+            theme_color: '#348FE2',
+            background_color: '#ffffff',
             display: 'standalone',
             icons: [
               {
-                src: 'logo no bg, white.svg',
+                src: 'logo bg white, blue.png',
+                sizes: '192x192',
+                type: 'image/png'
+              },
+              {
+                src: 'logo bg white, blue.png',
                 sizes: '512x512',
-                type: 'image/svg+xml'
+                type: 'image/png'
+              },
+              {
+                src: 'logo bg white, blue.png',
+                sizes: '512x512',
+                type: 'image/png',
+                purpose: 'any maskable'
               }
             ]
           }
