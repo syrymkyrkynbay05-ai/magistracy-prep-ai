@@ -237,7 +237,7 @@ const TestScreen: React.FC<TestScreenProps> = ({ questions, durationMinutes, onF
               </div>
 
               {/* Main Question Card Area */}
-              <div className="flex-1 overflow-y-auto bg-white p-3 md:px-8 md:py-6 pb-72 md:pb-6">
+              <div className="flex-1 overflow-y-auto bg-white p-3 md:px-8 md:py-6 pb-32 md:pb-6">
                   <div className="max-w-6xl mx-auto flex flex-col pt-2">
                       
                       {/* Nav Bar - Mobile Responsive */}
