@@ -245,7 +245,8 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, isLoading, onVie
             {/* Master Card - English */}
             <motion.div 
               whileHover={{ scale: 1.01 }}
-              className="md:col-span-8 bento-item group flex flex-col justify-between"
+              onClick={onViewProgram}
+              className="md:col-span-8 bento-item group flex flex-col justify-between cursor-pointer"
             >
               <div className="glow-overlay" />
               <div className="relative z-10">
@@ -269,7 +270,8 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, isLoading, onVie
             {/* Small Card - TGO */}
             <motion.div 
               whileHover={{ scale: 1.01 }}
-              className="md:col-span-4 bento-item group flex flex-col justify-between bg-purple-600/5 border-purple-500/20"
+              onClick={onViewProgram}
+              className="md:col-span-4 bento-item group flex flex-col justify-between bg-purple-600/5 border-purple-500/20 cursor-pointer"
             >
               <div className="glow-overlay" style={{ background: 'radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.15) 0%, transparent 80%)' }} />
               <div className="relative z-10">
@@ -288,7 +290,8 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, isLoading, onVie
             {/* Small Card - Logic/Algo */}
             <motion.div 
               whileHover={{ scale: 1.01 }}
-              className="md:col-span-4 bento-item group flex flex-col justify-between bg-emerald-500/5 border-emerald-500/20"
+              onClick={onViewProgram}
+              className="md:col-span-4 bento-item group flex flex-col justify-between bg-emerald-500/5 border-emerald-500/20 cursor-pointer"
             >
               <div className="glow-overlay" style={{ background: 'radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.1) 0%, transparent 80%)' }} />
               <div className="relative z-10">
@@ -317,7 +320,8 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, isLoading, onVie
             {/* Small Card - DB */}
             <motion.div 
               whileHover={{ scale: 1.01 }}
-              className="md:col-span-4 bento-item group flex flex-col justify-between bg-blue-500/5 border-blue-500/20"
+              onClick={onViewProgram}
+              className="md:col-span-4 bento-item group flex flex-col justify-between bg-blue-500/5 border-blue-500/20 cursor-pointer"
             >
               <div className="glow-overlay" />
               <div className="relative z-10">
