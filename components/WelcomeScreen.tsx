@@ -77,13 +77,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, isLoading, onVie
           </motion.div>
 
           <div className="hidden md:flex items-center gap-10">
-            <button 
-              onClick={() => setIsLightMode(!isLightMode)}
-              className="p-2 rounded-full hover:bg-white/10 transition-colors"
-              title="Фонды ауыстыру"
-            >
-              {isLightMode ? <Moon className="w-5 h-5 text-slate-600" /> : <Sun className="w-5 h-5 text-yellow-400" />}
-            </button>
+
             <button onClick={() => setShowFlashcards(true)} className="text-sm font-bold text-slate-400 hover:text-white transition-colors tracking-widest uppercase flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-blue-400" /> Карточкалар
             </button>
@@ -93,6 +87,13 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, isLoading, onVie
             {userName && (
               <div className="flex items-center gap-4 border-l border-white/5 pl-10">
                 <span className="text-sm font-bold text-slate-300">{userName}</span>
+                <button 
+                  onClick={() => setIsLightMode(!isLightMode)}
+                  className={`p-3 rounded-xl border transition-all active:scale-95 flex items-center justify-center ${isLightMode ? 'bg-slate-100 border-slate-200 text-slate-600' : 'glass border-white/10 text-yellow-400'}`}
+                  title="Фонды ауыстыру"
+                >
+                  {isLightMode ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
+                </button>
                 <button
                   onClick={onLogout}
                   className="p-3 glass border-white/10 text-red-500 rounded-xl hover:bg-red-500/10 transition-all active:scale-95"
@@ -104,7 +105,10 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, isLoading, onVie
             )}
           </div>
 
-          <button className="md:hidden glass p-2 rounded-lg" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          <button className="md:hidden glass p-2 rounded-lg flex items-center gap-2" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            <div onClick={(e) => { e.stopPropagation(); setIsLightMode(!isLightMode); }} className="p-1">
+              {isLightMode ? <Moon className="w-5 h-5 text-slate-600" /> : <Sun className="w-5 h-5 text-yellow-400" />}
+            </div>
             {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
