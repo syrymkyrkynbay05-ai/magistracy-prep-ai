@@ -205,8 +205,19 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
               className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-500/10 border border-blue-500/20 rounded-full mb-10"
             >
               <Sparkles className="w-4 h-4 text-blue-400" />
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-400">2027 ЖЫЛҒЫ РЕСМИ БАҒДАРЛАМА (UPDATED)</span>
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-400">ВЕРСИЯ: 3.0.0 (ADMIN TEST 2028)</span>
             </motion.div>
+            
+            {isAdmin && (
+              <motion.button
+                onClick={onViewAdmin}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="mb-8 px-6 py-2 bg-blue-500 text-white font-black rounded-full text-xs uppercase tracking-widest shadow-xl"
+              >
+                🛡️ АДМИН ПАНЕЛІНЕ КІРУ
+              </motion.button>
+            )}
             
             <motion.h1 
               initial={{ opacity: 0, scale: 0.95 }}
