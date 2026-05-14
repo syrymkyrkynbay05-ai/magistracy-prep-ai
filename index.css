@@ -257,3 +257,53 @@ body {
 .tap-highlight-none {
   -webkit-tap-highlight-color: transparent;
 }
+
+/* --- Light Mode Theme Overrides --- */
+.theme-light {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+}
+.theme-light .text-white { color: #0f172a !important; }
+.theme-light .text-\[\#f8fafc\] { color: #0f172a !important; }
+.theme-light .text-slate-400 { color: #475569 !important; }
+.theme-light .text-slate-300 { color: #334155 !important; }
+.theme-light .text-slate-500 { color: #64748b !important; }
+.theme-light .glass {
+  background: rgba(255, 255, 255, 0.7) !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+.theme-light .glass-dark {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+.theme-light .bento-item {
+  background: rgba(255, 255, 255, 0.5) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+}
+.theme-light .bento-item:hover {
+  background: rgba(255, 255, 255, 0.8) !important;
+  border-color: rgba(0, 0, 0, 0.15) !important;
+}
+.theme-light .border-white\/5 { border-color: rgba(0,0,0,0.05) !important; }
+.theme-light .border-white\/10 { border-color: rgba(0,0,0,0.1) !important; }
+.theme-light .border-white\/20 { border-color: rgba(0,0,0,0.15) !important; }
+.theme-light .bg-white\/5 { background-color: rgba(0,0,0,0.03) !important; }
+.theme-light .bg-white\/10 { background-color: rgba(0,0,0,0.06) !important; }
+.theme-light .bg-white\/20 { background-color: rgba(0,0,0,0.1) !important; }
+.theme-light .bg-\[\#07090d\] { background-color: #ffffff !important; }
+.theme-light .gradient-text {
+  background: linear-gradient(135deg, #0f172a 0%, #475569 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+.theme-light .hover\:text-white:hover { color: #3b82f6 !important; }
+.theme-light .blob { opacity: 0.3 !important; }
+.theme-light input { color: #0f172a !important; }
+.theme-light input::placeholder { color: #94a3b8 !important; }
+.theme-light .gradient-brand, .theme-light .gradient-brand * { color: #ffffff !important; }
+.theme-light img[alt="MagisCore Logo"] { filter: brightness(0); }
+.theme-light .text-slate-700 { color: #64748b !important; }
+

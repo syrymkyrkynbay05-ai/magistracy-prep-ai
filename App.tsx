@@ -114,48 +114,48 @@ const RootApp: React.FC = () => {
     <div className="font-sans">
       <Routes>
         <Route path="/" element={<Navigate to="/home" replace />} />
-        <Route 
-          path="/home" 
+        <Route
+          path="/home"
           element={
-            <WelcomeScreen 
-              onStart={startTest} 
-              isLoading={isLoading} 
+            <WelcomeScreen
+              onStart={startTest}
+              isLoading={isLoading}
               onViewProgram={() => navigate('/program')}
               onViewHistory={() => navigate('/history')}
               userName={user.full_name}
               onLogout={handleLogout}
             />
-          } 
+          }
         />
-        <Route 
-          path="/program/:subjectId?" 
-          element={<SyllabusScreen onBack={() => navigate('/home')} />} 
+        <Route
+          path="/program/:subjectId?"
+          element={<SyllabusScreen onBack={() => navigate('/home')} />}
         />
-        <Route 
-          path="/history" 
-          element={<HistoryScreen onBack={() => navigate('/home')} />} 
+        <Route
+          path="/history"
+          element={<HistoryScreen onBack={() => navigate('/home')} />}
         />
-        <Route 
-          path="/test/:subjectId/q/:qIndex" 
+        <Route
+          path="/test/:subjectId/q/:qIndex"
           element={
             questions.length > 0 ? (
-              <TestScreen 
-                questions={questions} 
-                durationMinutes={EXAM_DURATION_MINUTES} 
+              <TestScreen
+                questions={questions}
+                durationMinutes={EXAM_DURATION_MINUTES}
                 onFinish={handleFinishTest}
                 userName={user.full_name}
               />
             ) : (
               <Navigate to="/home" replace />
             )
-          } 
+          }
         />
         <Route path="/test" element={<Navigate to={`/test/${SubjectId.ENGLISH}/q/1`} replace />} />
-        <Route 
-          path="/result" 
+        <Route
+          path="/result"
           element={
             questions.length > 0 ? (
-              <ResultScreen 
+              <ResultScreen
                 questions={questions}
                 answers={userAnswers}
                 onRestart={handleRestart}
@@ -166,8 +166,8 @@ const RootApp: React.FC = () => {
             ) : (
               <Navigate to="/home" replace />
             )
-          } 
-        />
+          }
+        />ц
       </Routes>
     </div>
   );

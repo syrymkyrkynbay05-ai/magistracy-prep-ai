@@ -4,7 +4,8 @@ import {
   BookOpen, Brain, Clock, Database, Globe, ArrowRight, 
   Award, Zap, Target, GraduationCap, TrendingUp, Shield, 
   Menu, X, Sparkles, ChevronRight, Play, ExternalLink,
-  MessageSquare, Star, Users, CheckCircle, LogOut, History
+  MessageSquare, Star, Users, CheckCircle, LogOut, History,
+  Sun, Moon
 } from 'lucide-react';
 import { SUBJECTS } from '../constants';
 import { SubjectId } from '../types';
@@ -25,6 +26,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, isLoading, onVie
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [showFlashcards, setShowFlashcards] = useState(false);
+  const [isLightMode, setIsLightMode] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -51,7 +53,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, isLoading, onVie
   };
 
   return (
-    <div className="min-h-screen bg-[#07090d] text-[#f8fafc] selection:bg-blue-500/30 overflow-x-hidden w-full max-w-[100vw] relative">
+    <div className={`min-h-screen ${isLightMode ? 'theme-light bg-white text-slate-900' : 'bg-[#07090d] text-[#f8fafc]'} selection:bg-blue-500/30 overflow-x-hidden w-full max-w-[100vw] relative transition-colors duration-500`}>
       
       {/* Background blobs */}
       <div className="absolute overflow-hidden inset-0 pointer-events-none">
@@ -75,6 +77,13 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, isLoading, onVie
           </motion.div>
 
           <div className="hidden md:flex items-center gap-10">
+            <button 
+              onClick={() => setIsLightMode(!isLightMode)}
+              className="p-2 rounded-full hover:bg-white/10 transition-colors"
+              title="Фонды ауыстыру"
+            >
+              {isLightMode ? <Moon className="w-5 h-5 text-slate-600" /> : <Sun className="w-5 h-5 text-yellow-400" />}
+            </button>
             <button onClick={() => setShowFlashcards(true)} className="text-sm font-bold text-slate-400 hover:text-white transition-colors tracking-widest uppercase flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-blue-400" /> Карточкалар
             </button>
@@ -110,6 +119,13 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, isLoading, onVie
               className="md:hidden glass-dark border-t border-white/5 overflow-hidden"
             >
               <div className="flex flex-col p-6 gap-6">
+                <button 
+                  onClick={() => setIsLightMode(!isLightMode)} 
+                  className="text-left text-sm font-bold text-slate-400 hover:text-white transition-colors tracking-[0.2em] uppercase flex items-center gap-3"
+                >
+                  {isLightMode ? <Moon className="w-4 h-4 text-slate-600" /> : <Sun className="w-4 h-4 text-yellow-400" />} 
+                  {isLightMode ? 'Қараңғы фон' : 'Жарық фон'}
+                </button>
                 <button 
                   onClick={() => { setShowFlashcards(true); setIsMenuOpen(false); }} 
                   className="text-left text-sm font-bold text-slate-400 hover:text-white transition-colors tracking-[0.2em] uppercase flex items-center gap-3"
