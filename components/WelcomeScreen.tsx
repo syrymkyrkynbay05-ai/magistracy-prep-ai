@@ -118,12 +118,18 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
             )}
           </div>
 
-          <button className="md:hidden glass p-2 rounded-lg flex items-center gap-2" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-            <div onClick={(e) => { e.stopPropagation(); setIsLightMode(!isLightMode); }} className="p-1">
-              {isLightMode ? <Moon className="w-5 h-5 text-slate-600" /> : <Sun className="w-5 h-5 text-yellow-400" />}
-            </div>
-            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+          <div className="md:hidden flex items-center gap-3">
+            <button 
+              onClick={() => setIsLightMode(!isLightMode)}
+              className={`p-2 rounded-xl border transition-all active:scale-95 flex items-center justify-center ${isLightMode ? 'bg-slate-100 border-slate-200 text-slate-600' : 'glass border-white/10 text-yellow-400'}`}
+              title="Фонды ауыстыру"
+            >
+              {isLightMode ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
+            </button>
+            <button className="glass p-2 rounded-lg" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Menu */}
