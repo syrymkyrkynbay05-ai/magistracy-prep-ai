@@ -39,7 +39,8 @@ const RootApp: React.FC = () => {
     checkAuth();
   }, []);
 
-  const handleAuthSuccess = (userData: { id: number; email: string; full_name: string }) => {
+  const handleAuthSuccess = (userData: { id: number; email: string; full_name: string; is_admin?: boolean }) => {
+    console.log("Auth Success. User is admin:", userData.is_admin);
     setUser(userData as UserProfile);
     navigate('/home');
   };
