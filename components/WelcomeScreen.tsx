@@ -17,10 +17,14 @@ interface WelcomeScreenProps {
   onViewProgram: () => void;
   onViewHistory: () => void;
   userName?: string;
+  isAdmin?: boolean;
   onLogout?: () => void;
+  onViewAdmin?: () => void;
 }
 
-const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, isLoading, onViewProgram, onViewHistory, userName, onLogout }) => {
+const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ 
+  onStart, isLoading, onViewProgram, onViewHistory, userName, isAdmin, onLogout, onViewAdmin 
+}) => {
   const [name, setName] = useState(userName || '');
   const [error, setError] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -94,6 +98,15 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, isLoading, onVie
                 >
                   {isLightMode ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
                 </button>
+                {isAdmin && (
+                  <button 
+                    onClick={onViewAdmin}
+                    className={`p-3 rounded-xl border transition-all active:scale-95 flex items-center justify-center ${isLightMode ? 'bg-blue-50 border-blue-100 text-blue-600' : 'glass border-blue-500/20 text-blue-400'}`}
+                    title="Админ Панель"
+                  >
+                    <Shield className="w-4 h-4" />
+                  </button>
+                )}
                 <button
                   onClick={onLogout}
                   className="p-3 glass border-white/10 text-red-500 rounded-xl hover:bg-red-500/10 transition-all active:scale-95"
@@ -158,6 +171,14 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, isLoading, onVie
                 
                 {userName && (
                   <div className="pt-6 border-t border-white/5 flex flex-col gap-6">
+                    {isAdmin && (
+                      <button 
+                        onClick={() => { onViewAdmin?.(); setIsMenuOpen(false); }} 
+                        className="text-left text-sm font-bold text-blue-400 hover:text-white transition-colors tracking-[0.2em] uppercase flex items-center gap-3"
+                      >
+                        <Shield className="w-4 h-4" /> Админ Панель
+                      </button>
+                    )}
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-bold text-slate-300">{userName}</span>
                       <button

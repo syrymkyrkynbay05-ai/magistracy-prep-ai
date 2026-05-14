@@ -139,6 +139,7 @@ class DBUser(Base):
     full_name = Column(String(255), nullable=False)
     hashed_password = Column(String(255), nullable=False)
     is_active = Column(Boolean, default=True)
+    is_admin = Column(Boolean, default=False)
     created_at = Column(
         DateTime, default=lambda: datetime.now(timezone.utc).replace(tzinfo=None)
     )
@@ -170,6 +171,7 @@ class UserProfile(BaseModel):
     email: str
     full_name: str
     is_active: bool
+    is_admin: bool
 
     class Config:
         from_attributes = True

@@ -34,8 +34,14 @@ from models import (
     DBTestResult,
 )
 from database import get_db, engine, Base
-from auth import DBUser, get_current_user  # Ensure users table is created
+from auth import DBUser, get_current_user, UserProfile  # Ensure users table is created
 from auth_routes import router as auth_router
+
+
+def get_admin_user(current_user: DBUser = Depends(get_current_user)) -> DBUser:
+    if not current_user.is_admin:
+        raise HTTPException(status_code=403, detail="Админ құқығыңыз жоқ")
+    return current_user
 
 load_dotenv()
 
@@ -385,6 +391,86 @@ async def calculate_results(
         correctCount=correct_count,
         totalQuestions=len(request.questions),
     )
+
+
+# --------------- Admin Endpoints ---------------
+
+
+@app.get("/admin/stats")
+async def get_admin_stats(
+    db: Session = Depends(get_db), admin: DBUser = Depends(get_admin_user)
+):
+    """General statistics for dashboard"""
+    total_users = db.query(DBUser).count()
+    total_tests = db.query(DBTestResult).count()
+    avg_score = db.query(func.avg(DBTestResult.total_score)).scalar() or 0
+
+    return {
+        "totalUsers": total_users,
+        "totalTests": total_tests,
+        "averageScore": round(float(avg_score), 1),
+    }
+
+
+@app.get("/admin/users")
+async def get_admin_users(
+    db: Session = Depends(get_db), admin: DBUser = Depends(get_admin_user)
+):
+    """List of all users with their summary stats"""
+    users = db.query(DBUser).all()
+    results = []
+
+    for u in users:
+        user_tests = (
+            db.query(DBTestResult).filter(DBTestResult.user_id == u.id).all()
+        )
+        test_count = len(user_tests)
+        max_score = max([t.total_score for t in user_tests]) if user_tests else 0
+        avg_score = (
+            sum([t.total_score for t in user_tests]) / test_count if test_count else 0
+        )
+
+        results.append(
+            {
+                "id": u.id,
+                "full_name": u.full_name,
+                "email": u.email,
+                "is_active": u.is_active,
+                "is_admin": u.is_admin,
+                "created_at": u.created_at,
+                "test_count": test_count,
+                "max_score": max_score,
+                "avg_score": round(float(avg_score), 1),
+            }
+        )
+
+    return results
+
+
+@app.get("/admin/user/{user_id}/results")
+async def get_user_results_admin(
+    user_id: int, db: Session = Depends(get_db), admin: DBUser = Depends(get_admin_user)
+):
+    """Detailed test history for a specific user"""
+    results = (
+        db.query(DBTestResult)
+        .filter(DBTestResult.user_id == user_id)
+        .order_by(DBTestResult.created_at.desc())
+        .all()
+    )
+
+    return [
+        {
+            "id": r.id,
+            "total_score": r.total_score,
+            "max_score": r.max_score,
+            "subject_scores": json.loads(r.subject_scores),
+            "correct_count": r.correct_count,
+            "total_questions": r.total_questions,
+            "created_at": r.created_at,
+        }
+        for r in results
+    ]
 
 
 # Mount static files for React assets (CSS, JS, images)

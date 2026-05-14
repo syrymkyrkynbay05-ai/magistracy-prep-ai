@@ -45,3 +45,21 @@ export const getSyllabus = async (subjectId: string): Promise<string> => {
     return "Қате орын алды.";
   }
 };
+
+export const getAdminStats = async () => {
+  const res = await fetch(`${API_BASE_URL}/admin/stats`, { headers: authHeaders() });
+  if (!res.ok) throw new Error("Failed to fetch admin stats");
+  return res.json();
+};
+
+export const getAdminUsers = async () => {
+  const res = await fetch(`${API_BASE_URL}/admin/users`, { headers: authHeaders() });
+  if (!res.ok) throw new Error("Failed to fetch admin users");
+  return res.json();
+};
+
+export const getUserResultsAdmin = async (userId: number) => {
+  const res = await fetch(`${API_BASE_URL}/admin/user/${userId}/results`, { headers: authHeaders() });
+  if (!res.ok) throw new Error("Failed to fetch user results");
+  return res.json();
+};

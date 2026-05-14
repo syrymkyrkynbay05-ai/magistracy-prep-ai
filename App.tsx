@@ -10,6 +10,7 @@ import TestScreen from './components/TestScreen';
 import ResultScreen from './components/ResultScreen';
 import SyllabusScreen from './components/SyllabusScreen';
 import HistoryScreen from './components/HistoryScreen';
+import AdminPanel from './components/AdminPanel';
 
 const RootApp: React.FC = () => {
   const [user, setUser] = useState<UserProfile | null>(getSavedUser());
@@ -123,7 +124,9 @@ const RootApp: React.FC = () => {
               onViewProgram={() => navigate('/program')}
               onViewHistory={() => navigate('/history')}
               userName={user.full_name}
+              isAdmin={user.is_admin}
               onLogout={handleLogout}
+              onViewAdmin={() => navigate('/admin')}
             />
           }
         />
@@ -134,6 +137,16 @@ const RootApp: React.FC = () => {
         <Route
           path="/history"
           element={<HistoryScreen onBack={() => navigate('/home')} />}
+        />
+        <Route
+          path="/admin"
+          element={
+            user?.is_admin ? (
+              <AdminPanel onBack={() => navigate('/home')} />
+            ) : (
+              <Navigate to="/home" replace />
+            )
+          }
         />
         <Route
           path="/test/:subjectId/q/:qIndex"
