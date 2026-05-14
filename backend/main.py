@@ -50,6 +50,19 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Magistracy Prep AI Backend")
 
+# Auto-set admin for Syrym (Temporary)
+@app.on_event("startup")
+async def set_admin_on_startup():
+    db = next(get_db())
+    try:
+        user = db.query(DBUser).filter(DBUser.email == "syrymkyrkynbay05@gmail.com").first()
+        if user and not user.is_admin:
+            user.is_admin = True
+            db.commit()
+            print("ADMIN STATUS UPDATED FOR syrymkyrkynbay05@gmail.com")
+    finally:
+        db.close()
+
 # Register auth routes
 app.include_router(auth_router)
 
