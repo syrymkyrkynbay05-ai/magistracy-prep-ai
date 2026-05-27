@@ -4,7 +4,7 @@
  */
 
 const API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname.match(/^\d{1,3}\./)) 
-  ? `http://${window.location.hostname}:8000` 
+  ? 'https://magistr.up.railway.app' 
   : '';
 const TOKEN_KEY = 'magistracy_access_token';
 const USER_KEY = 'magistracy_user';

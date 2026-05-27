@@ -211,7 +211,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
               className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-500/10 border border-blue-500/20 rounded-full mb-10"
             >
               <Sparkles className="w-4 h-4 text-blue-400" />
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-400">ВЕРСИЯ: 3.0.0 (ADMIN TEST 2028)</span>
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-400">ВЕРСИЯ: 3.0.0 (ADMIN TEST 2026)</span>
             </motion.div>
             
             {isAdmin && (

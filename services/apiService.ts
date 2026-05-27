@@ -1,9 +1,9 @@
 import { Question, SubjectId } from "../types";
 import { authHeaders } from "./authService";
 
-// Use localhost or local IP for local development, empty string for production
+// Use Railway API for development, empty string for production
 const API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname.match(/^\d{1,3}\./)) 
-  ? `http://${window.location.hostname}:8000` 
+  ? 'https://magistr.up.railway.app' 
   : '';
 
 export const generateQuestionsForSubject = async (
